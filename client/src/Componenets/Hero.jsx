@@ -4,12 +4,18 @@ import { motion, useAnimation, useInView, useScroll, useTransform } from 'framer
 const HeroSection = () => {
   const controls = useAnimation();
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.1 });
+  const isInView = useInView(ref, { once: true, amount: 0.15 });
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"]
   });
-  const yBg = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+
+  // Parallax effects for layered images
+  const yBgPrimary = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const yBgSecondary = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const yBgTertiary = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
+  const yText = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
+  const scaleImage = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
 
   // Animation variants
   const containerVariants = {
@@ -17,63 +23,36 @@ const HeroSection = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3
+        staggerChildren: 0.12,
+        delayChildren: 0.2
       }
     }
   };
 
   const textVariants = {
-    hidden: { y: 40, opacity: 0 },
+    hidden: { y: 30, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
       transition: {
         type: "spring",
         damping: 12,
-        stiffness: 100,
-        mass: 0.5
+        stiffness: 80,
+        mass: 0.6
       }
     }
   };
 
   const flowVariants = {
-    hidden: { scale: 1, rotate: 0 },
+    hidden: { scale: 1 },
     visible: {
-      scale: [1, 1.08, 1],
-      rotate: [0, 2, -2, 0],
+      scale: [1, 1.05, 1],
       transition: {
-        duration: 4,
+        duration: 3.5,
         repeat: Infinity,
         repeatType: "mirror",
         ease: "easeInOut"
       }
-    }
-  };
-
-  const ctaVariants = {
-    hidden: { y: 40, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 150,
-        damping: 15,
-        delay: 0.6
-      }
-    },
-    hover: {
-      scale: 1.03,
-      boxShadow: "0 10px 30px -5px rgba(0, 166, 118, 0.4)",
-      transition: {
-        type: "spring",
-        stiffness: 500,
-        damping: 15
-      }
-    },
-    tap: {
-      scale: 0.98
     }
   };
 
@@ -86,346 +65,367 @@ const HeroSection = () => {
   return (
     <section 
       ref={ref}
-      className="relative h-screen w-full overflow-hidden bg-gradient-to-b from-teal-50 to-white"
+      className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-white to-gray-50"
     >
-      {/* Advanced Background Elements */}
+      {/* Advanced Background Effects */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <QuantumParticles />
+        <FloatingAbstractShapes />
+        
+        {/* Primary Floating Image Card (Smaller) */}
         <motion.div 
-          className="absolute bottom-0 left-0 w-full h-1/3"
-          style={{ y: yBg }}
+          className="absolute right-4 sm:right-8 top-1/4 w-4/5 sm:w-3/5 md:w-1/2 lg:w-2/5 h-96 sm:h-[28rem] md:h-[30rem] overflow-hidden"
+          style={{ 
+            y: yBgPrimary,
+            scale: scaleImage
+          }}
+          initial={{ x: 50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.9, ease: "easeOut" }}
         >
-          <FluidWaves />
+          <motion.div 
+            className="relative w-full h-full bg-white/90 border-2 border-green-100/60 rounded-2xl shadow-2xl overflow-hidden backdrop-blur-sm"
+            whileHover={{ 
+              scale: 1.04, 
+              boxShadow: "0 25px 50px rgba(0, 166, 118, 0.25)"
+            }}
+            animate={{
+              y: [0, -15, 0],
+              rotate: [0, 1, 0]
+            }}
+            transition={{
+              duration: 4.5,
+              repeat: Infinity,
+              repeatType: "reverse",
+              ease: "easeInOut"
+            }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-l from-white/60 via-white/30 to-transparent z-10" />
+            <img 
+              src="./Hero1.png"
+              alt="Creative team working"
+              className="w-full h-full object-cover object-center"
+              loading="eager"
+              sizes="(max-width: 640px) 80vw, (max-width: 1024px) 60vw, 40vw"
+            />
+            <div className="absolute bottom-3 left-3 bg-green-600/40 text-green-800 text-xs sm:text-sm px-2.5 py-1 rounded-full font-medium">
+              Innovative Design
+            </div>
+          </motion.div>
         </motion.div>
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white opacity-30" />
+
+        {/* Secondary Floating Image Card (Repositioned) */}
+        <motion.div 
+          className="absolute right-8 sm:right-16 top-1/6 w-20 sm:w-36 md:w-44 lg:w-52 h-20 sm:h-36 md:h-44 lg:h-52 hidden sm:block"
+          style={{ y: yBgSecondary }}
+          initial={{ x: 40, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 1.1, ease: "easeOut", delay: 0.3 }}
+        >
+          <motion.div 
+            className="relative w-full h-full bg-white/85 border border-teal-100/60 rounded-xl shadow-xl overflow-hidden backdrop-blur-sm"
+            whileHover={{ 
+              scale: 1.05,
+              boxShadow: "0 15px 30px rgba(0, 128, 128, 0.2)"
+            }}
+            animate={{
+              y: [0, -10, 0],
+              rotate: [0, -1.5, 0]
+            }}
+            transition={{
+              duration: 5.5,
+              repeat: Infinity,
+              repeatType: "reverse",
+              ease: "easeInOut"
+            }}
+          >
+            <img 
+              src="./HeroSecondary.png"
+              alt="Abstract design element"
+              className="w-full h-full object-contain"
+              loading="lazy"
+            />
+          </motion.div>
+        </motion.div>
+
+        {/* Tertiary Floating Image Card (Repositioned) */}
+        <motion.div 
+          className="absolute right-12 sm:right-24 top-3/5 w-16 sm:w-24 md:w-28 lg:w-32 h-16 sm:h-24 md:h-28 lg:h-32 hidden md:block"
+          style={{ y: yBgTertiary }}
+          initial={{ x: 30, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 1.3, ease: "easeOut", delay: 0.5 }}
+        >
+          <motion.div 
+            className="relative w-full h-full bg-white/80 border border-green-100/40 rounded-lg shadow-lg overflow-hidden backdrop-blur-sm"
+            whileHover={{ 
+              scale: 1.06,
+              boxShadow: "0 10px 20px rgba(0, 166, 118, 0.15)"
+            }}
+            animate={{
+              y: [0, -8, 0],
+              rotate: [0, 1.5, 0]
+            }}
+            transition={{
+              duration: 6.5,
+              repeat: Infinity,
+              repeatType: "reverse",
+              ease: "easeInOut"
+            }}
+          >
+            <img 
+              src="./HeroTertiary.png"
+              alt="Decorative element"
+              className="w-full h-full object-contain"
+              loading="lazy"
+            />
+          </motion.div>
+        </motion.div>
       </div>
 
       {/* Content Container */}
-      <div className="relative z-10 h-full flex flex-col justify-center items-center px-6 sm:px-8 lg:px-12 text-center">
+      <div className="relative z-10 min-h-screen flex items-center px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
         <motion.div
           initial="hidden"
           animate={controls}
           variants={containerVariants}
-          className="max-w-5xl mx-auto"
+          className="max-w-2xl w-full"
+          style={{ y: yText }}
         >
-          {/* Headline with subtle shine effect */}
-          <motion.h1 
-            variants={textVariants}
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-6 text-gray-900"
-          >
-            <span className="relative inline-block">
-              <span className="absolute inset-0 bg-gradient-to-r from-green-400 to-teal-400 opacity-10 rounded-full filter blur-md" />
-              Welcome to{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-teal-500">
-                Infiow
-              </span>
-            </span>
-            <motion.span 
-              className="block mt-4 text-3xl sm:text-4xl md:text-5xl font-medium text-gray-700"
-              variants={textVariants}
-            >
-              Your Digital Innovation Partner
-            </motion.span>
-          </motion.h1>
-          
-          {/* Tagline with elegant divider */}
+          {/* Premium Badge */}
           <motion.div 
             variants={textVariants}
-            className="my-12 relative"
+            className="mb-6"
           >
-            <div className="absolute left-1/2 top-0 h-px w-32 bg-gradient-to-r from-transparent via-green-400 to-transparent transform -translate-x-1/2 -translate-y-4" />
-            <h2 className="text-2xl sm:text-3xl font-light text-gray-600 tracking-wide">
-              Where Ideas{' '}
-              <motion.span 
+            <div className="inline-flex items-center px-4 py-2 bg-green-100 rounded-full">
+              <span className="text-sm font-medium text-green-800">Innovation Partners</span>
+            </div>
+          </motion.div>
+          
+          {/* Headline */}
+          <motion.h1 
+            variants={textVariants}
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-900 leading-tight"
+          >
+            <span className="block">Transform Ideas</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-teal-500 filter drop-shadow-sm">
+              Into Reality
+            </span>
+          </motion.h1>
+          
+          {/* Tagline */}
+          <motion.div 
+            variants={textVariants}
+            className="mb-10 max-w-lg"
+          >
+            <h2 className="text-lg sm:text-xl md:text-2xl text-gray-600 font-light">
+              Where <motion.span 
                 className="relative inline-block text-green-600 font-medium"
                 variants={flowVariants}
               >
-                <span className="relative z-10">Flow</span>
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-green-400 rounded-full opacity-70" />
-              </motion.span>{' '}
-              into Results
+                <span className="relative z-10">Vision</span>
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-green-400/70 rounded-full" />
+              </motion.span> Meets Execution
             </h2>
-            <div className="absolute left-1/2 bottom-0 h-px w-32 bg-gradient-to-r from-transparent via-teal-400 to-transparent transform -translate-x-1/2 translate-y-4" />
+            <p className="mt-4 text-gray-500 text-sm sm:text-base">
+              We craft digital experiences that elevate brands and drive measurable results through strategic design and cutting-edge technology.
+            </p>
           </motion.div>
           
-          {/* Sophisticated CTA Button */}
-          <motion.div variants={textVariants} className="relative">
+          {/* Enhanced CTA Section */}
+          <motion.div 
+            variants={textVariants}
+            className="flex flex-col sm:flex-row gap-4 items-start"
+          >
             <motion.button
-              variants={ctaVariants}
-              whileHover="hover"
-              whileTap="tap"
-              className="relative px-10 py-4 bg-gradient-to-br from-green-600 to-teal-500 text-white font-medium rounded-lg text-lg sm:text-xl tracking-wide overflow-hidden group"
+              whileHover={{ 
+                y: -3,
+                boxShadow: "0 10px 25px -5px rgba(0, 166, 118, 0.3)"
+              }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 350 }}
+              className="px-6 sm:px-8 py-3 sm:py-3.5 bg-gradient-to-r from-green-600 to-teal-500 text-white font-medium rounded-lg text-base sm:text-lg flex items-center gap-2"
             >
-              <span className="relative z-10 flex items-center justify-center gap-3">
-                Begin Your Journey
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="transition-transform duration-300 group-hover:translate-x-1"
-                >
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </span>
-              <span className="absolute inset-0 bg-gradient-to-br from-green-700 to-teal-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <span className="absolute inset-0 border border-green-500 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              Get Started
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
             </motion.button>
-            <div className="absolute -bottom-4 left-1/2 w-4/5 h-4 bg-green-400/20 rounded-full filter blur-md transform -translate-x-1/2 scale-90" />
+            
+            <div className="flex items-center gap-3">
+              <div className="flex -space-x-2">
+                {[1, 2, 3].map((item) => (
+                  <div key={item} className="w-8 h-8 rounded-full bg-gray-200 border-2 border-white" />
+                ))}
+              </div>
+              <div className="text-sm text-gray-500">
+                Trusted by 500+ brands
+              </div>
+            </div>
           </motion.div>
         </motion.div>
+      </div>
 
-        {/* Elegant Scroll Indicator */}
-        <motion.div
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ 
-            opacity: [0, 1, 0],
-            y: [20, 10, 0],
-          }}
-          transition={{
-            duration: 2.5,
-            repeat: Infinity,
-            repeatType: "loop",
-            ease: "easeInOut",
-            delay: 1.8
-          }}
-        >
-          <div className="flex flex-col items-center">
-            <div className="w-px h-12 bg-gradient-to-t from-green-400 to-transparent" />
-            <span className="text-xs text-green-600 mt-2 tracking-widest">EXPLORE</span>
+      {/* Floating Elements */}
+      <FloatingDots />
+      
+      {/* Scroll Indicator */}
+      <ScrollIndicator />
+      
+      {/* Stats Bar */}
+      <div className="absolute bottom-0 left-0 w-full bg-white/90 backdrop-blur-md border-t border-gray-100 z-20">
+        <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-5">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 justify-items-center">
+            <div className="text-center">
+              <div className="text-xl sm:text-2xl font-bold text-green-600">10+</div>
+              <div className="text-xs sm:text-sm text-gray-500">Years Experience</div>
+            </div>
+            <div className="text-center">
+              <div className="text-xl sm:text-2xl font-bold text-green-600">200+</div>
+              <div className="text-xs sm:text-sm text-gray-500">Projects Delivered</div>
+            </div>
+            <div className="text-center">
+              <div className="text-xl sm:text-2xl font-bold text-green-600">98%</div>
+              <div className="text-xs sm:text-sm text-gray-500">Client Satisfaction</div>
+            </div>
+            <div className="text-center">
+              <div className="text-xl sm:text-2xl font-bold text-green-600">50+</div>
+              <div className="text-xs sm:text-sm text-gray-500">Team Members</div>
+            </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
 };
 
-// Quantum Particle System
-const QuantumParticles = () => {
-  const canvasRef = useRef(null);
-  const animationRef = useRef(null);
-  const particleCount = useRef(0);
-  const resizeTimeout = useRef(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    let width = window.innerWidth;
-    let height = window.innerHeight;
-    
-    // Set canvas dimensions
-    const setDimensions = () => {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = width;
-      canvas.height = height;
-      particleCount.current = Math.min(Math.floor(width * height / 15000), 120);
-    };
-    
-    setDimensions();
-
-    // Particle class with quantum-inspired behavior
-    class QuantumParticle {
-      constructor() {
-        this.reset();
-        this.size = Math.random() * 2.5 + 0.5;
-        this.baseHue = Math.random() * 60 + 150; // Green/teal spectrum
-        this.hueVariation = Math.random() * 20;
-        this.saturation = 70 + Math.random() * 20;
-        this.lightness = 50 + Math.random() * 20;
-        this.quantumState = Math.random() * Math.PI * 2;
-        this.quantumSpeed = Math.random() * 0.02 + 0.01;
-        this.entanglementGroup = Math.floor(Math.random() * 3);
-      }
-      
-      reset() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.vx = Math.random() * 1 - 0.5;
-        this.vy = Math.random() * 1 - 0.5;
-        this.life = 0;
-        this.maxLife = Math.random() * 500 + 300;
-        this.oscillationPhase = Math.random() * Math.PI * 2;
-      }
-      
-      update(particles, time) {
-        // Quantum state evolution
-        this.quantumState += this.quantumSpeed;
-        
-        // Entanglement behavior - particles in same group influence each other
-        if (this.entanglementGroup !== undefined) {
-          const entangledParticles = particles.filter(p => 
-            p !== this && p.entanglementGroup === this.entanglementGroup
-          );
-          
-          if (entangledParticles.length > 0) {
-            const avgX = entangledParticles.reduce((sum, p) => sum + p.x, 0) / entangledParticles.length;
-            const avgY = entangledParticles.reduce((sum, p) => sum + p.y, 0) / entangledParticles.length;
-            
-            const dx = avgX - this.x;
-            const dy = avgY - this.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            
-            if (distance < 300) {
-              const force = 0.0005 * (300 - distance);
-              this.vx += dx * force;
-              this.vy += dy * force;
-            }
-          }
-        }
-        
-        // Apply quantum fluctuations
-        this.vx += Math.sin(this.quantumState) * 0.02;
-        this.vy += Math.cos(this.quantumState * 1.3) * 0.02;
-        
-        // Apply velocity with damping
-        this.x += this.vx;
-        this.y += this.vy;
-        this.vx *= 0.985;
-        this.vy *= 0.985;
-        
-        // Pulsing effect
-        this.sizePulse = Math.sin(time * 0.002 + this.oscillationPhase) * 0.3 + 1;
-        
-        // Life cycle
-        this.life++;
-        if (this.life > this.maxLife || 
-            this.x < -100 || this.x > width + 100 || 
-            this.y < -100 || this.y > height + 100) {
-          this.reset();
-        }
-      }
-      
-      draw(ctx, time) {
-        // Calculate current color with subtle hue variation
-        const currentHue = this.baseHue + Math.sin(time * 0.001 + this.quantumState) * this.hueVariation;
-        const alpha = 0.2 + Math.sin(this.life * 0.02) * 0.1;
-        
-        // Draw particle
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size * this.sizePulse, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(${currentHue}, ${this.saturation}%, ${this.lightness}%, ${alpha})`;
-        ctx.fill();
-      }
-    }
-    
-    // Initialize particles
-    const particles = Array.from({ length: particleCount.current }, () => new QuantumParticle());
-    
-    // Animation loop
-    const animate = (time) => {
-      ctx.clearRect(0, 0, width, height);
-      
-      // Update and draw particles
-      particles.forEach(particle => {
-        particle.update(particles, time);
-        particle.draw(ctx, time);
-      });
-      
-      // Draw connections between particles
-      drawQuantumConnections(ctx, particles, time);
-      
-      animationRef.current = requestAnimationFrame(animate);
-    };
-    
-    // Draw quantum entanglement connections
-    const drawQuantumConnections = (ctx, particles, time) => {
-      ctx.lineWidth = 0.6;
-      
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const p1 = particles[i];
-          const p2 = particles[j];
-          
-          // Only connect particles in the same entanglement group
-          if (p1.entanglementGroup === p2.entanglementGroup) {
-            const dx = p1.x - p2.x;
-            const dy = p1.y - p2.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            
-            if (distance < 250) {
-              const opacity = 0.3 * (1 - distance / 250);
-              const hue = (p1.baseHue + p2.baseHue) / 2;
-              
-              ctx.beginPath();
-              ctx.moveTo(p1.x, p1.y);
-              ctx.lineTo(p2.x, p2.y);
-              ctx.strokeStyle = `hsla(${hue}, 70%, 60%, ${opacity})`;
-              ctx.stroke();
-            }
-          }
-        }
-      }
-    };
-    
-    // Start animation
-    animationRef.current = requestAnimationFrame(animate);
-    
-    // Handle resize with debounce
-    const handleResize = () => {
-      clearTimeout(resizeTimeout.current);
-      resizeTimeout.current = setTimeout(() => {
-        setDimensions();
-      }, 100);
-    };
-    
-    window.addEventListener('resize', handleResize);
-    
-    return () => {
-      cancelAnimationFrame(animationRef.current);
-      window.removeEventListener('resize', handleResize);
-      clearTimeout(resizeTimeout.current);
-    };
-  }, []);
-  
+// Background Components
+const FloatingAbstractShapes = () => {
   return (
-    <canvas 
-      ref={canvasRef}
-      className="absolute inset-0 w-full h-full pointer-events-none"
-    />
+    <>
+      <motion.div
+        className="absolute left-4 sm:left-8 top-1/5 w-36 sm:w-48 h-36 sm:h-48 rounded-full bg-green-100/60 filter blur-2xl"
+        animate={{
+          y: [0, 25, 0],
+          opacity: [0.4, 0.6, 0.4]
+        }}
+        transition={{
+          duration: 18,
+          repeat: Infinity,
+          repeatType: "reverse",
+          ease: "easeInOut"
+        }}
+      />
+      <motion.div
+        className="absolute left-1/4 bottom-1/5 w-56 sm:w-72 h-56 sm:h-72 rounded-xl bg-teal-100/40 filter blur-3xl rotate-6"
+        animate={{
+          y: [0, -40, 0],
+          rotate: [6, 9, 6]
+        }}
+        transition={{
+          duration: 22,
+          repeat: Infinity,
+          repeatType: "reverse",
+          ease: "easeInOut"
+        }}
+      />
+      <motion.div
+        className="absolute right-1/5 top-1/4 w-32 sm:w-40 h-32 sm:h-40 rounded-full bg-green-200/30 filter blur-xl"
+        animate={{
+          y: [0, 20, 0],
+          x: [0, -25, 0]
+        }}
+        transition={{
+          duration: 15,
+          repeat: Infinity,
+          repeatType: "reverse",
+          ease: "easeInOut"
+        }}
+      />
+    </>
   );
 };
 
-// Fluid Wave Background Component
-const FluidWaves = () => {
+const FloatingDots = () => {
   return (
-    <svg 
-      className="w-full h-full"
-      viewBox="0 0 1440 320"
-      preserveAspectRatio="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <defs>
-        <linearGradient id="fluidGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#00A676" stopOpacity="0.15" />
-          <stop offset="50%" stopColor="#00A676" stopOpacity="0.08" />
-          <stop offset="100%" stopColor="#E6FFFB" stopOpacity="0.05" />
-        </linearGradient>
-      </defs>
-      <motion.path
-        d="M0,192 C360,96 720,320 1080,192 C1440,64 1440,320 1440,320 L1440,320 L0,320 Z"
-        fill="url(#fluidGradient)"
-        initial={{ opacity: 0 }}
-        animate={{ 
-          opacity: 1,
-          d: [
-            "M0,192 C360,96 720,320 1080,192 C1440,64 1440,320 1440,320 L1440,320 L0,320 Z",
-            "M0,192 C360,320 720,64 1080,192 C1440,320 1440,64 1440,64 L1440,320 L0,320 Z",
-            "M0,160 C360,280 720,40 1080,160 C1440,280 1440,40 1440,40 L1440,320 L0,320 Z",
-            "M0,192 C360,96 720,320 1080,192 C1440,64 1440,320 1440,320 L1440,320 L0,320 Z"
-          ]
+    <>
+      <motion.div
+        className="absolute left-1/3 top-1/4 w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-green-400/90"
+        animate={{
+          y: [0, -50, 0],
+          x: [0, 25, 0],
+          opacity: [0.7, 1, 0.7]
         }}
         transition={{
-          d: { duration: 18, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" },
-          opacity: { duration: 2 }
+          duration: 9,
+          repeat: Infinity,
+          repeatType: "reverse",
+          ease: "easeInOut"
         }}
       />
-    </svg>
+      <motion.div
+        className="absolute right-1/4 bottom-1/3 w-1 sm:w-1.5 h-1 sm:h-1.5 rounded-full bg-teal-400/90"
+        animate={{
+          y: [0, 35, 0],
+          x: [0, -20, 0],
+          opacity: [0.5, 1, 0.5]
+        }}
+        transition={{
+          duration: 11,
+          repeat: Infinity,
+          repeatType: "reverse",
+          ease: "easeInOut"
+        }}
+      />
+    </>
+  );
+};
+
+const ScrollIndicator = () => {
+  return (
+    <motion.div
+      className="absolute bottom-16 sm:bottom-20 left-1/2 transform -translate-x-1/2 z-30"
+      initial={{ opacity: 0, y: 25 }}
+      animate={{ 
+        opacity: [0, 1, 0],
+        y: [25, 15, 0]
+      }}
+      transition={{
+        duration: 2.8,
+        repeat: Infinity,
+        repeatType: "loop",
+        ease: "easeInOut",
+        delay: 1.2
+      }}
+    >
+      <div className="flex flex-col items-center">
+        <motion.div
+          className="w-px h-16 sm:h-20 bg-gradient-to-t from-green-400 to-transparent"
+          animate={{
+            height: [16, 24, 16]
+          }}
+          transition={{
+            duration: 1.8,
+            repeat: Infinity,
+            repeatType: "loop",
+            ease: "easeInOut"
+          }}
+        />
+        <motion.span
+          className="text-xs sm:text-sm text-green-600 mt-2 tracking-widest font-medium"
+          animate={{
+            opacity: [0.6, 1, 0.6]
+          }}
+          transition={{
+            duration: 2.2,
+            repeat: Infinity,
+            repeatType: "loop",
+            ease: "easeInOut"
+          }}
+        >
+          EXPLORE MORE
+        </motion.span>
+      </div>
+    </motion.div>
   );
 };
 
