@@ -101,7 +101,7 @@ const HeroSection = () => {
           >
             <div className="absolute inset-0 bg-gradient-to-l from-white/60 via-white/30 to-transparent z-10" />
             <img 
-              src="./Hero1.png"
+              src="./Hero2.jpg"
               alt="Creative team working"
               className="w-full h-full object-cover object-center"
               loading="eager"
