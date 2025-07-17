@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './Componenets/Navbar'; // Note: Corrected spelling from "Componenets" to "Components"
 import Home from './Pages/Home';
+import Footer from './Componenets/Footer';
 // import Home from './pages/Home';
 // import About from './pages/About';
 // import Services from './pages/Services';
@@ -21,7 +22,9 @@ function App() {
         <Route path="/testimonials" element={<Testimonials />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/quote" element={<Quote />} /> */}
+     
       </Routes>
+         <Footer />
     </Router>
   );
 }
