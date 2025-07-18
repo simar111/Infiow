@@ -3,6 +3,8 @@ import Navbar from './Componenets/Navbar'; // Note: Corrected spelling from "Com
 import Home from './Pages/Home';
 import Footer from './Componenets/Footer';
 import AboutUsPage from './Pages/About';
+import ServicesPage from './Pages/Services';
+import ContactPage from './Pages/Contact';
 // import Home from './pages/Home';
 // import About from './pages/About';
 // import Services from './pages/Services';
@@ -18,12 +20,13 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutUsPage />} />
-        {/* <Route path="/services" element={<Services />} />
-        <Route path="/portfolio" element={<Portfolio />} />
+        <Route path="/services" element={<ServicesPage />} />
+         <Route path="/contact" element={<ContactPage />} />
+        {/* <Route path="/portfolio" element={<Portfolio />} />
         <Route path="/testimonials" element={<Testimonials />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/quote" element={<Quote />} /> */}
-     
+        <Route path="/quote" element={<Quote />} />
+      */}
       </Routes>
          <Footer />
     </Router>
