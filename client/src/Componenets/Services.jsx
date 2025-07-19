@@ -361,9 +361,6 @@ const ServicesSection = () => {
             </motion.div>
           ))}
         </motion.div>
-
-        {/* Stats bar */}
-       
       </motion.div>
     </motion.section>
   );
