@@ -1,62 +1,61 @@
-import { motion, useAnimation, useInView } from 'framer-motion';
+import { motion, useAnimation, useInView, useScroll, useTransform } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
+import { Code, BarChart2, Film, Image as ImageIcon } from 'react-feather';
 
 const ServicesSection = () => {
   const ref = useRef(null);
   const controls = useAnimation();
   const isInView = useInView(ref, { once: true, amount: 0.1 });
   const [activeService, setActiveService] = useState(null);
-
-  // Add fonts to document head
-  useEffect(() => {
-    const link = document.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;500&display=swap';
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
-  }, []);
+  const [isHovering, setIsHovering] = useState(false);
+  
+  // Scroll-based animations
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  });
+  
+  const yPos = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1, 0.5]);
 
   const services = [
     {
       id: 1,
       title: "Website Development",
       description: "We craft blazing-fast, responsive websites with cutting-edge tech stacks that drive conversions and user engagement.",
-      icon: "💻",
-      image: "./web.avif",
+      icon: <Code size={24} />,
+      color: "#2563eb",
+      image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
       features: ["Next.js/React", "Headless CMS", "Web Performance", "SEO Optimized"]
     },
     {
       id: 2,
       title: "Digital Marketing",
       description: "Data-driven campaigns that maximize ROI through precision targeting, conversion optimization, and performance analytics.",
-      icon: "📈",
-      image: "./Digital.jpg",
+      icon: <BarChart2 size={24} />,
+      color: "#9333ea",
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
       features: ["PPC Advertising", "Social Media", "Content Strategy", "Analytics"]
     },
     {
       id: 3,
       title: "Video Production",
       description: "Cinematic storytelling with professional editing, motion graphics, and effects that captivate audiences and boost engagement.",
-      icon: "🎥",
-      image: "./Video.jpg",
+      icon: <Film size={24} />,
+      color: "#dc2626",
+      image: "https://images.unsplash.com/photo-1574717024453-3545a7d5bb2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
       features: ["4K Production", "Motion Graphics", "Color Grading", "Sound Design"]
     },
     {
       id: 4,
       title: "Brand Design",
       description: "Strategic visual identities that communicate your brand essence across all touchpoints with memorable impact.",
-      icon: "🎨",
-      image: "./Brand.jpg",
+      icon: <ImageIcon size={24} />,
+      color: "#059669",
+      image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
       features: ["Logo Design", "Brand Guidelines", "Visual Systems", "Art Direction"]
     }
   ];
-
-  // Glass morphism effect styles
-  const glassStyle = {
-    background: 'rgba(255, 255, 255, 0.15)',
-    backdropFilter: 'blur(12px)',
-    border: '1px solid rgba(255, 255, 255, 0.2)',
-    boxShadow: '0 8px 32px 0 rgba(0, 166, 118, 0.15)'
-  };
 
   // Animation variants
   const containerVariants = {
@@ -64,8 +63,9 @@ const ServicesSection = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
-        when: "beforeChildren"
+        staggerChildren: 0.1,
+        when: "beforeChildren",
+        ease: [0.16, 1, 0.3, 1]
       }
     }
   };
@@ -78,7 +78,8 @@ const ServicesSection = () => {
       transition: {
         type: "spring",
         damping: 10,
-        stiffness: 100
+        stiffness: 100,
+        mass: 0.5
       }
     }
   };
@@ -91,12 +92,16 @@ const ServicesSection = () => {
       transition: {
         type: "spring",
         damping: 12,
-        stiffness: 100
+        stiffness: 100,
+        mass: 0.5
       }
     },
     hover: {
       y: -10,
-      transition: { duration: 0.3 }
+      transition: { 
+        duration: 0.3,
+        ease: "easeOut"
+      }
     }
   };
 
@@ -107,7 +112,8 @@ const ServicesSection = () => {
       opacity: 1,
       transition: {
         type: "spring",
-        stiffness: 300
+        stiffness: 300,
+        damping: 10
       }
     }
   };
@@ -118,109 +124,97 @@ const ServicesSection = () => {
     }
   }, [isInView, controls]);
 
+  // Preload images for better performance
+  useEffect(() => {
+    services.forEach(service => {
+      const img = new Image();
+      img.src = service.image;
+    });
+  }, []);
+
   return (
-    <section 
+    <motion.section 
       ref={ref}
       className="services-section"
       style={{
         position: 'relative',
-        padding: '6rem 1rem',
-        backgroundColor: '#FFFFFF',
-        overflow: 'hidden'
+        padding: '8rem 1rem',
+        backgroundColor: '#f8fafc',
+        overflow: 'hidden',
+        opacity
       }}
     >
-      {/* Animated background elements */}
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        overflow: 'hidden',
-        zIndex: 0
-      }}>
-        {[...Array(8)].map((_, i) => (
-          <motion.div
-            key={i}
-            style={{
-              position: 'absolute',
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(0,166,118,0.1) 0%, rgba(0,166,118,0) 70%)',
-              width: `${Math.random() * 400 + 100}px`,
-              height: `${Math.random() * 400 + 100}px`,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              opacity: 0.6
-            }}
-            animate={{
-              x: [0, (Math.random() - 0.5) * 200],
-              y: [0, (Math.random() - 0.5) * 200],
-            }}
-            transition={{
-              duration: Math.random() * 20 + 10,
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut"
-            }}
-          />
-        ))}
+      {/* Subtle animated background */}
+      <div className="absolute inset-0 overflow-hidden z-0">
+        <motion.div 
+          className="absolute inset-0 bg-gradient-to-br from-blue-50/20 via-purple-50/20 to-green-50/20"
+          animate={{
+            backgroundPosition: ['0% 0%', '100% 100%']
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "linear"
+          }}
+        />
+        
+        {/* Grid pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <svg className="w-full h-full" width="100%" height="100%">
+            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5" />
+            </pattern>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+          </svg>
+        </div>
       </div>
 
-      <div className="container" style={{
-        maxWidth: '1400px',
-        margin: '0 auto',
-        padding: '0 1rem',
-        position: 'relative',
-        zIndex: 1
-      }}>
+      <motion.div 
+        className="container mx-auto px-4 max-w-7xl relative z-10"
+        style={{ y: yPos }}
+      >
         {/* Section Header */}
         <motion.div
           initial="hidden"
           animate={controls}
           variants={titleVariants}
-          style={{
-            textAlign: 'center',
-            marginBottom: '5rem'
-          }}
+          className="text-center mb-16"
         >
-          <motion.h2 
-            style={{
-              fontFamily: "'Poppins', sans-serif",
-              fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-              fontWeight: 700,
-              color: '#000000',
-              marginBottom: '1.5rem',
-              lineHeight: 1.2
-            }}
+          <motion.div 
+            className="inline-flex items-center px-4 py-2 bg-white rounded-full shadow-sm mb-6"
+            whileHover={{ scale: 1.05 }}
           >
+            <span className="text-sm font-medium text-blue-600">Our Services</span>
+          </motion.div>
+          
+          <motion.h2 
+            className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight"
+          >
+            <span className="block">Tailored Solutions for</span>
             <motion.span 
-              style={{ display: 'inline-block' }}
+              className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-green-500"
               animate={{
-                color: ['#000000', '#00A676', '#000000'],
+                backgroundPosition: ['0% 50%', '100% 50%']
               }}
               transition={{
                 duration: 8,
                 repeat: Infinity,
-                ease: "easeInOut"
+                repeatType: "reverse",
+                ease: "linear"
               }}
             >
-              Our Expertise
+              Your Digital Success
             </motion.span>
           </motion.h2>
+          
           <motion.p 
-            style={{
-              fontFamily: "'Open Sans', sans-serif",
-              fontSize: '1.25rem',
-              color: '#000000',
-              maxWidth: '800px',
-              margin: '0 auto',
-              opacity: 0.8
-            }}
+            className="text-lg text-gray-600 max-w-3xl mx-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.8 }}
             transition={{ delay: 0.3 }}
           >
-            Delivering cutting-edge solutions that drive measurable results and exceptional user experiences.
+            Comprehensive digital services designed to elevate your brand and drive measurable results.
           </motion.p>
         </motion.div>
 
@@ -229,12 +223,9 @@ const ServicesSection = () => {
           initial="hidden"
           animate={controls}
           variants={containerVariants}
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '2rem',
-            position: 'relative'
-          }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative"
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
         >
           {services.map((service) => (
             <motion.div
@@ -242,90 +233,67 @@ const ServicesSection = () => {
               variants={cardVariants}
               whileHover="hover"
               onClick={() => setActiveService(activeService === service.id ? null : service.id)}
+              className={`relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 ${
+                activeService === service.id ? 'md:col-span-2 lg:col-span-2 h-auto' : 'h-96'
+              }`}
               style={{
-                position: 'relative',
-                borderRadius: '1.5rem',
-                overflow: 'hidden',
-                cursor: 'pointer',
-                height: activeService === service.id ? 'auto' : '400px',
-                transition: 'height 0.5s cubic-bezier(0.65, 0, 0.35, 1)'
+                boxShadow: '0 10px 30px -5px rgba(0, 0, 0, 0.1)',
+                willChange: 'transform'
               }}
             >
-              {/* Background Image with Parallax Effect */}
+              {/* Background Image with optimized loading */}
               <motion.div 
-                style={{
-                  position: 'absolute',
-                  width: '100%',
-                  height: '100%',
-                  backgroundImage: `url(${service.image})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  zIndex: -1
-                }}
+                className="absolute inset-0 bg-gray-200"
                 animate={{
-                  scale: activeService === service.id ? 1.1 : 1
+                  scale: activeService === service.id ? 1.05 : 1,
+                  filter: activeService === service.id ? 'brightness(0.7)' : 'brightness(0.6)'
                 }}
                 transition={{
-                  duration: 0.5
+                  duration: 0.5,
+                  ease: "easeOut"
                 }}
-              />
+              >
+                <img
+                  src={service.image}
+                  alt={service.title}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                  width={600}
+                  height={400}
+                />
+              </motion.div>
               
-              {/* Overlay */}
-              <div style={{
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                background: 'linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3))',
-                zIndex: -1
-              }} />
+              {/* Gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
 
               {/* Content */}
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                height: '100%',
-                padding: '2rem',
-                color: '#FFFFFF'
-              }}>
+              <div className="relative h-full flex flex-col justify-between p-6 text-white">
                 {/* Top Content */}
                 <div>
                   <motion.div 
-                    style={{
-                      fontSize: '2.5rem',
-                      marginBottom: '1rem'
-                    }}
+                    className="w-12 h-12 rounded-full flex items-center justify-center mb-4"
+                    style={{ backgroundColor: service.color }}
                     animate={{
-                      rotate: activeService === service.id ? [0, 10, -10, 0] : 0,
-                      scale: activeService === service.id ? [1, 1.2, 1] : 1
+                      rotate: activeService === service.id ? [0, 5, -5, 0] : 0,
+                      scale: activeService === service.id ? [1, 1.1, 1] : 1
                     }}
                     transition={{
-                      duration: 0.8,
+                      duration: 1.5,
                       repeat: activeService === service.id ? Infinity : 0,
                       repeatType: "mirror"
                     }}
                   >
                     {service.icon}
                   </motion.div>
-                  <h3 style={{
-                    fontFamily: "'Poppins', sans-serif",
-                    fontSize: '1.75rem',
-                    fontWeight: 600,
-                    marginBottom: '0.5rem'
-                  }}>
+                  <h3 className="text-2xl font-bold mb-2">
                     {service.title}
                   </h3>
-                  <p style={{
-                    fontFamily: "'Open Sans', sans-serif",
-                    fontSize: '1rem',
-                    opacity: 0.9,
-                    marginBottom: '1.5rem'
-                  }}>
+                  <p className="text-gray-200 mb-4">
                     {service.description}
                   </p>
                 </div>
 
-                {/* Features (Expanded View) */}
+                {/* Expanded Content */}
                 {activeService === service.id && (
                   <motion.div 
                     initial="hidden"
@@ -337,25 +305,17 @@ const ServicesSection = () => {
                         }
                       }
                     }}
-                    style={{
-                      marginTop: '2rem'
-                    }}
+                    className="mt-6"
                   >
-                    <div style={{
-                      display: 'flex',
-                      flexWrap: 'wrap',
-                      gap: '0.5rem',
-                      marginBottom: '2rem'
-                    }}>
+                    <div className="flex flex-wrap gap-2 mb-6">
                       {service.features.map((feature, index) => (
                         <motion.span
                           key={index}
                           variants={featureVariants}
-                          style={{
-                            padding: '0.5rem 1rem',
-                            background: 'rgba(255, 255, 255, 0.15)',
-                            borderRadius: '2rem',
-                            fontSize: '0.875rem',
+                          className="px-3 py-1.5 rounded-full text-sm"
+                          style={{ 
+                            backgroundColor: `${service.color}20`,
+                            border: `1px solid ${service.color}50`,
                             backdropFilter: 'blur(5px)'
                           }}
                         >
@@ -364,24 +324,10 @@ const ServicesSection = () => {
                       ))}
                     </div>
                     <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      style={{
-                        padding: '0.75rem 1.5rem',
-                        backgroundColor: '#00A676',
-                        color: '#FFFFFF',
-                        border: 'none',
-                        borderRadius: '0.5rem',
-                        fontFamily: "'Poppins', sans-serif",
-                        fontWeight: 500,
-                        fontSize: '0.875rem',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                        width: '100%',
-                        justifyContent: 'center'
-                      }}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full py-3 px-6 rounded-lg font-medium flex items-center justify-center gap-2"
+                      style={{ backgroundColor: service.color }}
                     >
                       Get Started
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -396,21 +342,14 @@ const ServicesSection = () => {
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center'
-                    }}
+                    className="flex justify-center"
                   >
-                    <div style={{
-                      padding: '0.5rem 1rem',
-                      background: 'rgba(255, 255, 255, 0.2)',
-                      borderRadius: '2rem',
-                      fontSize: '0.875rem',
-                      backdropFilter: 'blur(5px)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.25rem'
-                    }}>
+                    <div className="px-4 py-2 rounded-full flex items-center gap-1 text-sm"
+                      style={{ 
+                        backgroundColor: 'rgba(255, 255, 255, 0.15)',
+                        backdropFilter: 'blur(5px)'
+                      }}
+                    >
                       Learn more
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M5 12h14M12 5l7 7-7 7" />
@@ -422,8 +361,11 @@ const ServicesSection = () => {
             </motion.div>
           ))}
         </motion.div>
-      </div>
-    </section>
+
+        {/* Stats bar */}
+       
+      </motion.div>
+    </motion.section>
   );
 };
 
