@@ -99,7 +99,7 @@ const ModernHeroWith3DCarousel = () => {
       icon: <Globe className="w-5 h-5" />,
       preview: "Engaging video content that captivates",
       content: "We produce professional videos that boost engagement.",
-      imageUrl: "https://images.unsplash.com/photo-1574717024453-3545a7d5bb2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+      imageUrl: "./cinematic.webp"
     }
   ];
 

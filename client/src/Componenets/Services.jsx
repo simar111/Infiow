@@ -43,7 +43,7 @@ const ServicesSection = () => {
       description: "Cinematic storytelling with professional editing, motion graphics, and effects that captivate audiences and boost engagement.",
       icon: <Film size={24} />,
       color: "#dc2626",
-      image: "https://images.unsplash.com/photo-1574717024453-3545a7d5bb2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80",
+      image: "./Video.jpg",
       features: ["4K Production", "Motion Graphics", "Color Grading", "Sound Design"]
     },
     {
