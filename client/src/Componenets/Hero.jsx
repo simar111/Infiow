@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion, useAnimation, useInView, useTransform, useScroll } from 'framer-motion';
+import { motion, useAnimation, useInView, useTransform, useScroll, AnimatePresence } from 'framer-motion';
+import { Globe, Palette, Rocket, Code } from 'lucide-react';
 
-const ModernHero = () => {
+const ModernHeroWith3DCarousel = () => {
   const ref = useRef(null);
   const controls = useAnimation();
   const isInView = useInView(ref, { once: true, amount: 0.1 });
@@ -10,19 +11,26 @@ const ModernHero = () => {
     offset: ["start start", "end start"]
   });
 
-  // Parallax effects
-  const yText = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
-  const yImage = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
-  const scaleImage = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
+  // Enhanced parallax effects with smoother transitions
+  const yText = useTransform(scrollYProgress, [0, 1], ["0%", "10%"], {
+    clamp: false
+  });
+  const yImage = useTransform(scrollYProgress, [0, 1], ["0%", "8%"], {
+    clamp: false
+  });
+  const scaleImage = useTransform(scrollYProgress, [0, 1], [1, 1.03], {
+    clamp: false
+  });
 
-  // Animation variants
+  // Animation variants with more fluid motions
   const container = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
         staggerChildren: 0.15,
-        delayChildren: 0.3
+        delayChildren: 0.3,
+        ease: [0.16, 1, 0.3, 1]
       }
     }
   };
@@ -34,8 +42,10 @@ const ModernHero = () => {
       opacity: 1,
       transition: {
         type: "spring",
-        damping: 12,
-        stiffness: 100
+        damping: 15,
+        stiffness: 100,
+        mass: 0.5,
+        restDelta: 0.001
       }
     }
   };
@@ -45,7 +55,7 @@ const ModernHero = () => {
     visible: {
       y: [0, -15, 0],
       transition: {
-        duration: 6,
+        duration: 8,
         repeat: Infinity,
         repeatType: "mirror",
         ease: "easeInOut"
@@ -53,11 +63,120 @@ const ModernHero = () => {
     }
   };
 
+  // Carousel data with 4 optimized cards
+  const carouselCards = [
+    {
+      id: "web-dev",
+      category: "SERVICE: Web Development",
+      title: "Modern Web Solutions",
+      icon: <Code className="w-5 h-5" />,
+      preview: "Cutting-edge websites that drive results",
+      content: "We build responsive, high-performance websites using the latest technologies.",
+      imageUrl: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      id: "brand-design",
+      category: "SERVICE: Brand Design",
+      title: "Strategic Visual Identity",
+      icon: <Palette className="w-5 h-5" />,
+      preview: "Memorable branding that stands out",
+      content: "We create cohesive brand systems that communicate your values.",
+      imageUrl: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      id: "digital-marketing",
+      category: "SERVICE: Digital Marketing",
+      title: "Data-Driven Campaigns",
+      icon: <Rocket className="w-5 h-5" />,
+      preview: "Maximize your ROI with precision targeting",
+      content: "Our marketing strategies leverage analytics to deliver results.",
+      imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      id: "video-production",
+      category: "SERVICE: Video Production",
+      title: "Cinematic Storytelling",
+      icon: <Globe className="w-5 h-5" />,
+      preview: "Engaging video content that captivates",
+      content: "We produce professional videos that boost engagement.",
+      imageUrl: "https://images.unsplash.com/photo-1574717024453-3545a7d5bb2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+    }
+  ];
+
+  // Enhanced 3D Carousel state and logic
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isAutoRotating, setIsAutoRotating] = useState(true);
+  const [direction, setDirection] = useState(1); // 1 for forward, -1 for backward
+  const timeoutRef = useRef(null);
+  
+  // Reset timeout for auto-rotation
+  const resetTimeout = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+  };
+  
   useEffect(() => {
     if (isInView) {
       controls.start("visible");
     }
   }, [isInView, controls]);
+  
+  // Enhanced auto-rotation with cleanup and direction control
+  useEffect(() => {
+    if (!isAutoRotating) return;
+    
+    resetTimeout();
+    
+    timeoutRef.current = setTimeout(() => {
+      setActiveIndex(prev => (prev + direction + carouselCards.length) % carouselCards.length);
+    }, 5000);
+
+    return () => resetTimeout();
+  }, [activeIndex, isAutoRotating, direction, carouselCards.length]);
+
+  const handleCardClick = (index) => {
+    // Determine direction for animation
+    setDirection(index > activeIndex ? 1 : -1);
+    setActiveIndex(index);
+    setIsAutoRotating(false);
+    
+    // Restart auto-rotation after delay
+    resetTimeout();
+    timeoutRef.current = setTimeout(() => {
+      setIsAutoRotating(true);
+      setDirection(1); // Reset to forward direction
+    }, 10000);
+  };
+
+  // Improved carousel card positioning
+  const getCardPosition = (index) => {
+    const position = (index - activeIndex) % carouselCards.length;
+    const absPosition = Math.abs(position);
+    const isActive = index === activeIndex;
+    
+    // Calculate positions with direction awareness
+    let xPos = position * 120;
+    let rotateY = position * 15;
+    
+    // If we're at the end and looping, adjust positions
+    if (position === carouselCards.length - 1 && direction === 1) {
+      xPos = -120;
+      rotateY = -15;
+    } else if (position === -carouselCards.length + 1 && direction === -1) {
+      xPos = 120;
+      rotateY = 15;
+    }
+    
+    return {
+      x: xPos,
+      y: isActive ? 0 : 30,
+      scale: isActive ? 1 : 0.85,
+      opacity: isActive ? 1 : 0.7 - (absPosition * 0.2),
+      rotateY: rotateY,
+      zIndex: isActive ? 10 : carouselCards.length - absPosition
+    };
+  };
 
   return (
     <section 
@@ -79,7 +198,7 @@ const ModernHero = () => {
           transition={{ delay: 0.5 }}
         />
         
-        {/* Grid Pattern */}
+        {/* Subtle Grid Pattern */}
         <div className="absolute inset-0 opacity-5">
           <svg className="w-full h-full" width="100%" height="100%">
             <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
@@ -135,7 +254,11 @@ const ModernHero = () => {
             className="flex flex-col sm:flex-row gap-4 w-full max-w-md"
           >
             <motion.button
-              whileHover={{ y: -3 }}
+              whileHover={{ 
+                y: -3,
+                scale: 1.02,
+                boxShadow: "0 10px 25px -5px rgba(5, 150, 105, 0.2)"
+              }}
               whileTap={{ scale: 0.97 }}
               className="px-6 py-3.5 bg-gradient-to-r from-green-600 to-teal-500 text-white font-medium rounded-lg text-lg flex items-center justify-center gap-2 shadow-lg hover:shadow-green-200/50 transition-all"
             >
@@ -158,7 +281,7 @@ const ModernHero = () => {
           </motion.div>
         </motion.div>
 
-        {/* Image Content - Right Side */}
+        {/* Enhanced 3D Carousel - Right Side */}
         <motion.div 
           className="lg:w-1/2 relative w-full h-full max-w-2xl mx-auto lg:mx-0"
           style={{ 
@@ -166,87 +289,99 @@ const ModernHero = () => {
             scale: scaleImage
           }}
         >
-          {/* Main Image with Floating Effect */}
-          <motion.div
-            className="relative w-full aspect-square lg:aspect-[4/5] rounded-3xl overflow-hidden border-2 border-white shadow-2xl"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ 
-              opacity: 1, 
-              scale: 1,
-              y: [0, -15, 0],
-              rotate: [0, 1, -1, 0]
-            }}
-            transition={{
-              opacity: { duration: 0.8 },
-              scale: { duration: 0.8 },
-              y: {
-                duration: 8,
-                repeat: Infinity,
-                repeatType: "mirror",
-                ease: "easeInOut"
-              },
-              rotate: {
-                duration: 12,
-                repeat: Infinity,
-                repeatType: "mirror",
-                ease: "easeInOut"
-              }
-            }}
-          >
-            <img
-              src="./Hero2.jpg"
-              alt="Creative team working"
-              className="w-full h-full object-cover"
-              loading="eager"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+          {/* Carousel Container */}
+          <div className="relative w-full h-[500px] perspective-1000">
+            {/* Carousel Cards with AnimatePresence for smoother transitions */}
+            <AnimatePresence custom={direction}>
+              {carouselCards.map((card, index) => {
+                const isActive = index === activeIndex;
+                const position = getCardPosition(index);
+                
+                return (
+                  <motion.div
+                    key={`${card.id}-${activeIndex}`} // Change key to force re-render on activeIndex change
+                    className={`absolute w-full h-full rounded-3xl overflow-hidden border-2 border-white shadow-2xl cursor-pointer ${
+                      isActive ? 'z-10' : 'z-0'
+                    }`}
+                    initial={false}
+                    animate={position}
+                    custom={direction}
+                    transition={{ 
+                      type: 'spring', 
+                      stiffness: 300, 
+                      damping: 25,
+                      mass: 0.7,
+                      restDelta: 0.001
+                    }}
+                    onClick={() => handleCardClick(index)}
+                    whileHover={{ 
+                      scale: isActive ? 1.02 : 0.9,
+                      transition: { duration: 0.2 }
+                    }}
+                  >
+                    {/* Card Content */}
+                    <div className="relative w-full h-full">
+                      <img
+                        src={card.imageUrl}
+                        alt={card.title}
+                        className="w-full h-full object-cover"
+                        loading={isActive ? "eager" : "lazy"}
+                        width={600}
+                        height={400}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                      
+                      {/* Card Info */}
+                      <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="text-green-300">
+                            {card.icon}
+                          </div>
+                          <span className="text-xs font-medium tracking-wider">
+                            {card.category}
+                          </span>
+                        </div>
+                        <h3 className="text-xl font-bold mb-1">{card.title}</h3>
+                        <p className="text-sm opacity-90">{card.preview}</p>
+                      </div>
+                      
+                      {/* Active Card Indicator */}
+                      {isActive && (
+                        <motion.div 
+                          className="absolute top-4 right-4 w-3 h-3 rounded-full bg-green-400 shadow-lg"
+                          animate={{ scale: [1, 1.2, 1] }}
+                          transition={{ duration: 1.5, repeat: Infinity }}
+                        />
+                      )}
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
             
-            {/* Floating Badge */}
-            <motion.div
-              className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-md flex items-center gap-2"
-              whileHover={{ scale: 1.05 }}
-            >
-              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-sm font-medium text-gray-800">Innovative Design</span>
-            </motion.div>
-          </motion.div>
-
-          {/* Secondary Floating Element */}
-          <motion.div
-            className="absolute -bottom-6 -right-6 w-24 h-24 sm:w-32 sm:h-32 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden hidden sm:block"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ 
-              opacity: 1,
-              x: 0,
-              y: [0, -10, 0],
-              rotate: [0, -2, 2, 0]
-            }}
-            transition={{
-              opacity: { delay: 0.5, duration: 0.8 },
-              x: { delay: 0.5, duration: 0.8 },
-              y: {
-                delay: 1,
-                duration: 7,
-                repeat: Infinity,
-                repeatType: "mirror",
-                ease: "easeInOut"
-              },
-              rotate: {
-                delay: 1,
-                duration: 10,
-                repeat: Infinity,
-                repeatType: "mirror",
-                ease: "easeInOut"
-              }
-            }}
-          >
-            <img
-              src="./HeroSecondary.png"
-              alt="Abstract design element"
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
-          </motion.div>
+            {/* Enhanced Carousel Controls */}
+            <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-20">
+              {carouselCards.map((_, index) => (
+                <motion.button
+                  key={index}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    index === activeIndex ? 'bg-green-500' : 'bg-white/50'
+                  }`}
+                  onClick={() => handleCardClick(index)}
+                  aria-label={`Go to slide ${index + 1}`}
+                  whileHover={{ scale: 1.5 }}
+                  animate={{
+                    width: index === activeIndex ? 24 : 8
+                  }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 500,
+                    damping: 30
+                  }}
+                />
+              ))}
+            </div>
+          </div>
         </motion.div>
       </div>
 
@@ -265,7 +400,12 @@ const ModernHero = () => {
                 className="text-center"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 + index * 0.1 }}
+                transition={{ 
+                  delay: 0.2 + index * 0.1,
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 10
+                }}
               >
                 <div className="text-xl sm:text-2xl font-bold text-green-600">{stat.value}</div>
                 <div className="text-xs sm:text-sm text-gray-500">{stat.label}</div>
@@ -275,7 +415,7 @@ const ModernHero = () => {
         </div>
       </div>
 
-      {/* Scroll Indicator - Only on desktop */}
+      {/* Enhanced Scroll Indicator */}
       <motion.div
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2 hidden lg:block"
         initial={{ opacity: 0, y: 20 }}
@@ -295,7 +435,8 @@ const ModernHero = () => {
           <motion.div
             className="w-px h-16 bg-gradient-to-t from-green-400 to-transparent"
             animate={{
-              height: [16, 24, 16]
+              height: [16, 24, 16],
+              opacity: [0.6, 1, 0.6]
             }}
             transition={{
               duration: 1.8,
@@ -304,13 +445,23 @@ const ModernHero = () => {
               ease: "easeInOut"
             }}
           />
-          <span className="text-xs text-green-600 mt-2 tracking-widest font-medium">
+          <motion.span 
+            className="text-xs text-green-600 mt-2 tracking-widest font-medium"
+            animate={{
+              opacity: [0.7, 1, 0.7]
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              repeatType: "loop"
+            }}
+          >
             SCROLL TO EXPLORE
-          </span>
+          </motion.span>
         </div>
       </motion.div>
     </section>
   );
 };
 
-export default ModernHero;
+export default ModernHeroWith3DCarousel;
