@@ -112,51 +112,281 @@ const ServicesPage = () => {
 
       <main className="relative z-10">
         {/* Hero Section with Micro-Interactions */}
-        <section className="relative pt-40 pb-28 px-4 bg-gradient-to-b from-[#E6F7F2] to-[#FFFFFF]">
-          <div className="container mx-auto max-w-5xl">
-            <motion.div
-              initial={{ opacity: 0, y: 60 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: 'easeOut' }}
-              className="text-center"
-            >
-              <motion.h1
-                className="text-5xl md:text-7xl font-extrabold mb-8 tracking-tight"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.2, duration: 0.8 }}
-              >
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00A676] to-[#008F5D]">
-                  Innovate. Create. Succeed.
-                </span>
-              </motion.h1>
-              <motion.p
-                className="text-xl md:text-2xl text-[#000000]/80 mb-12 max-w-3xl mx-auto leading-relaxed"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4, duration: 0.8 }}
-              >
-                Transform your digital presence with our cutting-edge solutions in web, marketing, video, and design.
-              </motion.p>
-              <motion.a
-                href="#services"
-                className="inline-block px-10 py-4 bg-gradient-to-r from-[#00A676] to-[#008F5D] text-[#FFFFFF] rounded-full font-medium text-lg shadow-xl relative overflow-hidden group"
-                whileHover={{
-                  scale: 1.06,
-                  boxShadow: '0 15px 35px rgba(0, 166, 118, 0.5)',
-                }}
-                whileTap={{ scale: 0.94 }}
-                transition={{ duration: 0.3 }}
-              >
-                <motion.span
-                  className="absolute inset-0 bg-[#008F5D] opacity-0 group-hover:opacity-20"
-                  transition={{ duration: 0.3 }}
-                />
-                <span className="relative z-10">Discover Our Services</span>
-              </motion.a>
-            </motion.div>
-          </div>
-        </section>
+       <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 bg-gradient-to-b from-[#E6F7F2] to-[#FFFFFF]">
+  {/* Background elements */}
+  <div className="absolute inset-0 overflow-hidden">
+    {/* Floating abstract shapes */}
+    {[...Array(12)].map((_, i) => (
+      <motion.div
+        key={i}
+        className="absolute rounded-full bg-[#00A676]"
+        style={{
+          width: `${Math.random() * 300 + 100}px`,
+          height: `${Math.random() * 300 + 100}px`,
+          left: `${Math.random() * 100}%`,
+          top: `${Math.random() * 100}%`,
+          opacity: 0.05
+        }}
+        animate={{
+          x: [0, (Math.random() - 0.5) * 200],
+          y: [0, (Math.random() - 0.5) * 100],
+          opacity: [0.03, 0.08, 0.03]
+        }}
+        transition={{
+          duration: Math.random() * 20 + 10,
+          repeat: Infinity,
+          repeatType: 'reverse'
+        }}
+      />
+    ))}
+
+    {/* Grid pattern */}
+    <div className="absolute inset-0 opacity-10">
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+    </div>
+  </div>
+
+  {/* Floating particle animation */}
+  <div className="absolute inset-0 overflow-hidden">
+    {[...Array(30)].map((_, i) => (
+      <motion.div
+        key={i}
+        className="absolute rounded-full bg-[#00A676]"
+        style={{
+          width: `${Math.random() * 6 + 2}px`,
+          height: `${Math.random() * 6 + 2}px`,
+          left: `${Math.random() * 100}%`,
+          top: `${Math.random() * 100}%`,
+          opacity: 0.3
+        }}
+        animate={{
+          x: [0, (Math.random() - 0.5) * 100],
+          y: [0, (Math.random() - 0.5) * 50],
+          opacity: [0.1, 0.4, 0.1]
+        }}
+        transition={{
+          duration: Math.random() * 15 + 10,
+          repeat: Infinity,
+          repeatType: 'reverse'
+        }}
+      />
+    ))}
+  </div>
+
+  {/* Main content */}
+  <div className="container mx-auto max-w-7xl relative z-10">
+    <motion.div
+      initial={{ opacity: 0, y: 60 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1, ease: 'easeOut' }}
+      className="text-center"
+    >
+      {/* Animated tagline */}
+      <motion.div
+        className="inline-block px-6 py-2 mb-6 bg-[#00A676]/10 rounded-full backdrop-blur-sm border border-[#00A676]/20"
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.3, duration: 0.6 }}
+      >
+        <motion.span
+          className="text-[#00A676] font-medium"
+          animate={{
+            opacity: [0.8, 1, 0.8]
+          }}
+          transition={{
+            duration: 3,
+            repeat: Infinity,
+            ease: 'easeInOut'
+          }}
+        >
+          Digital Transformation Experts
+        </motion.span>
+      </motion.div>
+
+      {/* Main headline with advanced animation */}
+      <motion.h1
+        className="text-5xl md:text-8xl font-extrabold mb-8 tracking-tight leading-tight"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+      >
+        <span className="relative inline-block">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00A676] to-[#008F5D]">
+            Innovate.
+          </span>
+          <motion.span
+            className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-[#00A676] to-[#008F5D]"
+            initial={{ width: 0 }}
+            animate={{ width: '100%' }}
+            transition={{ delay: 0.4, duration: 0.8, ease: 'easeOut' }}
+          />
+        </span>
+        <br />
+        <span className="relative inline-block">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#008F5D] to-[#00684A]">
+            Create.
+          </span>
+          <motion.span
+            className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-[#008F5D] to-[#00684A]"
+            initial={{ width: 0 }}
+            animate={{ width: '100%' }}
+            transition={{ delay: 0.6, duration: 0.8, ease: 'easeOut' }}
+          />
+        </span>
+        <br />
+        <span className="relative inline-block">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00684A] to-[#004D36]">
+            Succeed.
+          </span>
+          <motion.span
+            className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-[#00684A] to-[#004D36]"
+            initial={{ width: 0 }}
+            animate={{ width: '100%' }}
+            transition={{ delay: 0.8, duration: 0.8, ease: 'easeOut' }}
+          />
+        </span>
+      </motion.h1>
+
+      {/* Animated description */}
+      <motion.p
+        className="text-xl md:text-3xl text-[#000000]/80 mb-12 max-w-4xl mx-auto leading-relaxed"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2, duration: 0.8 }}
+      >
+        Transform your digital presence with our <span className="font-semibold text-[#00A676]">cutting-edge solutions</span> in web development, digital marketing, video production, and graphic design.
+      </motion.p>
+
+      {/* CTA buttons with advanced effects */}
+      <motion.div
+        className="flex flex-col sm:flex-row justify-center gap-6"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.4, duration: 0.6 }}
+      >
+        <motion.a
+          href="#services"
+          className="relative px-12 py-5 bg-gradient-to-r from-[#00A676] to-[#008F5D] text-white rounded-full font-bold text-lg shadow-2xl overflow-hidden group"
+          whileHover={{
+            scale: 1.05,
+            boxShadow: '0 20px 40px rgba(0, 166, 118, 0.5)',
+          }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ duration: 0.3 }}
+        >
+          <motion.span
+            className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10"
+            transition={{ duration: 0.3 }}
+          />
+          <motion.span
+            className="absolute inset-0 bg-gradient-to-r from-[#008F5D] to-[#00684A] opacity-0 group-hover:opacity-100"
+            transition={{ duration: 0.3 }}
+          />
+          <span className="relative z-10 flex items-center justify-center gap-2">
+            Discover Our Services
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
+          </span>
+        </motion.a>
+
+        <motion.a
+          href="#contact"
+          className="relative px-12 py-5 bg-transparent text-[#00A676] rounded-full font-bold text-lg border-2 border-[#00A676] overflow-hidden group"
+          whileHover={{
+            backgroundColor: '#00A676',
+            color: '#FFFFFF',
+            boxShadow: '0 10px 30px rgba(0, 166, 118, 0.3)',
+          }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ duration: 0.3 }}
+        >
+          <motion.span
+            className="absolute inset-0 bg-[#00A676] opacity-0 group-hover:opacity-100"
+            transition={{ duration: 0.3 }}
+          />
+          <span className="relative z-10 flex items-center justify-center gap-2">
+            Get a Free Consultation
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+            </svg>
+          </span>
+        </motion.a>
+      </motion.div>
+
+      {/* Floating mockup showcase */}
+      <motion.div
+        className="relative mt-24 mx-auto max-w-5xl"
+        initial={{ opacity: 0, y: 60 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.6, duration: 0.8 }}
+      >
+        <div className="relative w-full aspect-[16/9] rounded-3xl overflow-hidden shadow-2xl border-8 border-white">
+          {/* Main mockup image */}
+          <img
+            src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+            alt="Digital showcase"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+
+          {/* Floating elements */}
+          <motion.div
+            className="absolute -bottom-6 -left-6 w-32 h-32 rounded-2xl bg-white shadow-xl border border-gray-100 overflow-hidden"
+            animate={{
+              y: [0, -15, 0],
+              rotateZ: [0, 5, -5, 0]
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: 'easeInOut'
+            }}
+          >
+            <img
+              src="https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80"
+              alt="Mobile app"
+              className="w-full h-full object-cover"
+            />
+          </motion.div>
+
+          <motion.div
+            className="absolute -top-6 -right-6 w-40 h-40 rounded-2xl bg-white shadow-xl border border-gray-100 overflow-hidden"
+            animate={{
+              y: [0, 15, 0],
+              rotateZ: [0, -5, 5, 0]
+            }}
+            transition={{
+              duration: 10,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              delay: 1
+            }}
+          >
+            <img
+              src="https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+              alt="Dashboard"
+              className="w-full h-full object-cover"
+            />
+          </motion.div>
+        </div>
+
+        {/* Glow effect */}
+        <motion.div
+          className="absolute -z-10 top-1/2 left-1/2 w-1/2 h-1/2 bg-[#00A676] rounded-full filter blur-[100px] opacity-20"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.1, 0.2, 0.1]
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: 'easeInOut'
+          }}
+        />
+      </motion.div>
+    </motion.div>
+  </div>
+</section>
 
         {/* Services Section with Glassmorphism Cards */}
         <section id="services" className="py-28 px-4">
