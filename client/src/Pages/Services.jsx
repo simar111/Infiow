@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { FaCode, FaBullhorn, FaVideo, FaPalette, FaExternalLinkAlt, FaRocket, FaStar ,FaArrowRight,FaCheckCircle} from 'react-icons/fa';
+import ServicesSectionultra from '../Componenets/UltraService';
 
 const ServicesPage = () => {
   const [activeTab, setActiveTab] = useState('webdev');
@@ -11,6 +12,41 @@ const ServicesPage = () => {
   });
   const yBackground = useTransform(scrollYProgress, [0, 1], [0, 250]);
   const opacityBackground = useTransform(scrollYProgress, [0, 0.5], [0.15, 0.5]);
+   const sectionRef = useRef(null);
+  const { scrollY } = useScroll();
+  const backgroundY = useTransform(scrollY, [0, 1000], [0, -200]);
+  const parallaxY = useTransform(scrollY, [0, 1000], [0, 150]);
+
+  const services = {
+    webdev: {
+      title: 'Website Development',
+      icon: <FaCode className="text-[#00A676]" />,
+      content: 'We build responsive, high-performance websites using modern stacks like MERN, Next.js, and Tailwind CSS. Our solutions prioritize speed, scalability, and SEO.',
+      benefits: ['Pixel-perfect designs', 'Optimized performance', 'Seamless integrations'],
+      accent: 'from-[#00A676] to-[#008F5D]',
+    },
+    marketing: {
+      title: 'Digital Marketing',
+      icon: <FaBullhorn className="text-[#00A676]" />,
+      content: 'Data-driven campaigns leveraging SEO, PPC, and social media to amplify your brand and drive targeted traffic with measurable results.',
+      benefits: ['Increased visibility', 'Precision targeting', 'High ROI'],
+      accent: 'from-[#00A676] to-[#008F5D]',
+    },
+    video: {
+      title: 'Video Production',
+      icon: <FaVideo className="text-[#00A676]" />,
+      content: 'Professional-grade videos for corporate, promotional, or social media use, crafted with 4K equipment and advanced editing tools.',
+      benefits: ['Cinematic quality', 'Compelling storytelling', 'Engagement boost'],
+      accent: 'from-[#00A676] to-[#008F5D]',
+    },
+    design: {
+      title: 'Graphic Design',
+      icon: <FaPalette className="text-[#00A676]" />,
+      content: 'Comprehensive branding and UI/UX design services using Figma and Adobe Creative Suite to create visually stunning identities.',
+      benefits: ['Cohesive branding', 'Intuitive interfaces', 'Memorable visuals'],
+      accent: 'from-[#00A676] to-[#008F5D]',
+    },
+  };
 
   const colors = {
     primary: '#FFFFFF',
@@ -22,41 +58,569 @@ const ServicesPage = () => {
     accentLight: '#33B589',
   };
 
-  const services = {
-    webdev: {
-      title: 'Website Development',
-      icon: <FaCode className="text-[#00A676]" />,
-      content:
-        'We build responsive, high-performance websites using modern stacks like MERN, Next.js, and Tailwind CSS. Our solutions prioritize speed, scalability, and SEO.',
-      benefits: ['Pixel-perfect designs', 'Optimized performance', 'Seamless integrations'],
-      accent: 'from-[#00A676] to-[#008F5D]',
-    },
-    marketing: {
-      title: 'Digital Marketing',
-      icon: <FaBullhorn className="text-[#00A676]" />,
-      content:
-        'Data-driven campaigns leveraging SEO, PPC, and social media to amplify your brand and drive targeted traffic with measurable results.',
-      benefits: ['Increased visibility', 'Precision targeting', 'High ROI'],
-      accent: 'from-[#00A676] to-[#008F5D]',
-    },
-    video: {
-      title: 'Video Production',
-      icon: <FaVideo className="text-[#00A676]" />,
-      content:
-        'Professional-grade videos for corporate, promotional, or social media use, crafted with 4K equipment and advanced editing tools.',
-      benefits: ['Cinematic quality', 'Compelling storytelling', 'Engagement boost'],
-      accent: 'from-[#00A676] to-[#008F5D]',
-    },
-    design: {
-      title: 'Graphic Design',
-      icon: <FaPalette className="text-[#00A676]" />,
-      content:
-        'Comprehensive branding and UI/UX design services using Figma and Adobe Creative Suite to create visually stunning identities.',
-      benefits: ['Cohesive branding', 'Intuitive interfaces', 'Memorable visuals'],
-      accent: 'from-[#00A676] to-[#008F5D]',
-    },
-  };
+   <section ref={sectionRef} className="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-800">
+      
+      {/* Advanced Background Effects */}
+      <motion.div 
+        className="absolute inset-0 opacity-30"
+        style={{ y: backgroundY }}
+      >
+        {/* Animated mesh gradient */}
+        <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/20 via-purple-500/20 to-pink-500/20 animate-gradient-xy" />
+        
+        {/* Floating geometric shapes */}
+        {Array.from({ length: 50 }, (_, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full bg-gradient-to-r from-white/10 to-emerald-400/20 blur-sm"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              width: Math.random() * 16 + 8,
+              height: Math.random() * 16 + 8,
+            }}
+            animate={{
+              x: [0, 50, -50, 0],
+              y: [0, -30, 30, 0],
+              rotate: [0, 180, 360],
+              scale: [1, 1.2, 0.8, 1],
+            }}
+            transition={{
+              duration: Math.random() * 20 + 15,
+              delay: Math.random() * 10,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+        ))}
+      </motion.div>
 
+      {/* Neural network background */}
+      <div className="absolute inset-0 opacity-20">
+        <svg className="w-full h-full">
+          {Array.from({ length: 20 }).map((_, i) => (
+            <motion.circle
+              key={i}
+              cx={`${Math.random() * 100}%`}
+              cy={`${Math.random() * 100}%`}
+              r="2"
+              fill="url(#gradient)"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 1, 0] }}
+              transition={{
+                duration: Math.random() * 3 + 2,
+                repeat: Infinity,
+                delay: Math.random() * 2
+              }}
+            />
+          ))}
+          <defs>
+            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#00A676" />
+              <stop offset="100%" stopColor="#00C9A7" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <div className="relative z-10 container mx-auto px-4 py-32">
+        
+        {/* Revolutionary Header */}
+        <motion.div 
+          className="text-center mb-32"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+        >
+          <motion.div
+            className="inline-block mb-8"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+          >
+            <span className="px-6 py-3 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 backdrop-blur-xl rounded-full text-emerald-300 text-sm font-medium border border-emerald-500/30">
+              ✨ Premium Digital Solutions
+            </span>
+          </motion.div>
+          
+          <motion.h2 
+            className="text-6xl md:text-8xl lg:text-9xl font-black mb-8 leading-tight"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+          >
+            <motion.span 
+              className="bg-clip-text text-transparent bg-gradient-to-r from-white via-emerald-300 to-teal-400"
+              animate={{ 
+                backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+              }}
+              transition={{ 
+                duration: 8,
+                repeat: Infinity,
+                ease: "easeInOut" 
+              }}
+              style={{ backgroundSize: '200% 200%' }}
+            >
+              Next-Gen
+            </motion.span>
+            <br />
+            <motion.span 
+              className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-red-400"
+              animate={{ 
+                backgroundPosition: ['100% 50%', '0% 50%', '100% 50%'],
+              }}
+              transition={{ 
+                duration: 8,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 1
+              }}
+              style={{ backgroundSize: '200% 200%' }}
+            >
+              Services
+            </motion.span>
+          </motion.h2>
+          
+          <motion.p 
+            className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+          >
+            Transforming ideas into digital excellence through cutting-edge technology 
+            and innovative design solutions
+          </motion.p>
+
+          {/* Floating metrics */}
+          <motion.div 
+            className="flex flex-col sm:flex-row justify-center gap-8 mt-16"
+            style={{ y: parallaxY }}
+          >
+            {[
+              { number: '500+', label: 'Projects Delivered' },
+              { number: '99%', label: 'Client Satisfaction' },
+              { number: '24/7', label: 'Support Available' }
+            ].map((metric, index) => (
+              <motion.div
+                key={index}
+                className="text-center p-6 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 + index * 0.2 }}
+                whileHover={{ 
+                  y: -10,
+                  transition: { duration: 0.3 }
+                }}
+              >
+                <div className="text-3xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
+                  {metric.number}
+                </div>
+                <div className="text-gray-400 text-sm">{metric.label}</div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.div>
+
+        {/* Ultra-Modern Service Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 mb-24">
+          {Object.entries(services).map(([key, service], index) => (
+            <motion.div
+              key={key}
+              className={`group relative h-[500px] cursor-pointer transition-all duration-700 ${
+                activeTab === key ? 'scale-105 z-20' : ''
+              }`}
+              initial={{ opacity: 0, y: 100, rotateX: -15 }}
+              whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+              viewport={{ once: true }}
+              transition={{ 
+                delay: index * 0.2, 
+                duration: 0.8,
+                type: "spring",
+                stiffness: 100
+              }}
+              onClick={() => setActiveTab(key)}
+              whileHover={{ 
+                y: -20,
+                rotateX: 5,
+                transition: { duration: 0.4 }
+              }}
+            >
+              {/* Holographic border effect */}
+              <div className={`absolute -inset-1 bg-gradient-to-r ${service.accent} rounded-3xl blur-lg opacity-0 group-hover:opacity-100 transition-all duration-700 animate-pulse`} />
+              
+              {/* Main card */}
+              <div className="relative h-full bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-2xl rounded-3xl border border-white/20 overflow-hidden">
+                
+                {/* Animated background pattern */}
+                <motion.div
+                  className={`absolute inset-0 bg-gradient-to-br ${service.accent} opacity-30`}
+                  animate={{
+                    opacity: [0.3, 0.5, 0.3]
+                  }}
+                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                />
+
+                {/* Floating icon container */}
+                <motion.div 
+                  className="absolute top-8 right-8 w-20 h-20 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center shadow-2xl"
+                  animate={{
+                    rotate: [0, 360],
+                    scale: [1, 1.1, 1],
+                  }}
+                  transition={{ 
+                    duration: 8,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                >
+                  <div className="text-3xl text-white">{service.icon}</div>
+                </motion.div>
+
+                {/* Floating particles on hover */}
+                <motion.div 
+                  className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                >
+                  {Array.from({ length: 8 }).map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute w-2 h-2 bg-white rounded-full"
+                      style={{
+                        left: `${Math.random() * 100}%`,
+                        top: `${Math.random() * 100}%`,
+                      }}
+                      animate={{ 
+                        opacity: [0, 1, 0], 
+                        scale: [0, 1, 0],
+                        y: [0, -50],
+                      }}
+                      transition={{
+                        duration: 2,
+                        delay: i * 0.1,
+                        repeat: Infinity,
+                      }}
+                    />
+                  ))}
+                </motion.div>
+
+                {/* Content */}
+                <div className="relative h-full flex flex-col justify-end p-8 text-white">
+                  <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 + index * 0.1 }}
+                  >
+                    <div className="mb-4">
+                      <h3 className="text-2xl font-bold mb-2">{service.title}</h3>
+                      <p className="text-emerald-300 text-sm font-medium">Premium Solutions</p>
+                    </div>
+                    
+                    <p className="text-gray-200 mb-6 leading-relaxed text-sm">
+                      {service.content}
+                    </p>
+
+                    {/* Benefits tags */}
+                    <div className="flex flex-wrap gap-2 mb-6">
+                      {service.benefits.map((benefit, i) => (
+                        <motion.span
+                          key={i}
+                          className="px-3 py-1 bg-white/10 backdrop-blur-sm rounded-full text-xs border border-white/20"
+                          whileHover={{ scale: 1.05 }}
+                        >
+                          {benefit}
+                        </motion.span>
+                      ))}
+                    </div>
+
+                    {/* CTA Button */}
+                    <motion.button
+                      className="w-full py-3 bg-gradient-to-r from-white/20 to-white/10 backdrop-blur-sm rounded-xl font-medium flex items-center justify-center gap-2 border border-white/30"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      Explore Service <FaArrowRight />
+                    </motion.button>
+                  </motion.div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Advanced Service Detail Panel */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            className="relative bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-3xl rounded-3xl border border-white/20 overflow-hidden shadow-2xl"
+            initial={{ opacity: 0, y: 50, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -50, scale: 0.95 }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+          >
+            {/* Animated background gradient */}
+            <motion.div 
+              className={`absolute inset-0 bg-gradient-to-br ${services[activeTab].accent} opacity-20`}
+              animate={{
+                opacity: [0.2, 0.3, 0.2]
+              }}
+              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            />
+
+            <div className="relative grid lg:grid-cols-2 gap-12 p-8 lg:p-12">
+              
+              {/* Left Column - Content */}
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3, duration: 0.6 }}
+              >
+                <motion.h3 
+                  className="text-4xl lg:text-5xl font-black mb-6 bg-gradient-to-r from-white via-emerald-300 to-teal-400 bg-clip-text text-transparent"
+                  layoutId="service-title"
+                >
+                  {services[activeTab].title}
+                </motion.h3>
+                
+                <motion.p 
+                  className="text-emerald-300 text-xl mb-8 font-medium"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  Premium Digital Excellence
+                </motion.p>
+                
+                <motion.p 
+                  className="text-gray-300 text-lg leading-relaxed mb-8"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.5 }}
+                >
+                  {services[activeTab].content}
+                </motion.p>
+
+                {/* Enhanced Features */}
+                <motion.div 
+                  className="mb-8"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.6 }}
+                >
+                  <h4 className="text-white font-semibold mb-4 flex items-center gap-2">
+                    <FaCheckCircle className="text-emerald-400" />
+                    Key Features
+                  </h4>
+                  <div className="space-y-3">
+                    {[
+                      'Cutting-edge technology implementation',
+                      'Premium quality assurance',
+                      '24/7 professional support',
+                      'Scalable and future-proof solutions'
+                    ].map((feature, i) => (
+                      <motion.div
+                        key={i}
+                        className="flex items-center gap-3 p-3 bg-white/5 rounded-xl border border-white/10"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.7 + i * 0.1 }}
+                        whileHover={{ backgroundColor: "rgba(255,255,255,0.1)" }}
+                      >
+                        <FaCheckCircle className="text-emerald-400 flex-shrink-0" />
+                        <span className="text-gray-300">{feature}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+
+                {/* Process Steps */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8 }}
+                >
+                  <h4 className="text-white font-semibold mb-4 flex items-center gap-2">
+                    <FaStar className="text-emerald-400" />
+                    Our Process
+                  </h4>
+                  <div className="grid grid-cols-2 gap-4">
+                    {[
+                      'Discovery', 'Design', 'Development', 'Deployment'
+                    ].map((step, i) => (
+                      <motion.div
+                        key={i}
+                        className="text-center p-4 bg-white/5 rounded-xl border border-white/10"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.9 + i * 0.1 }}
+                        whileHover={{ 
+                          scale: 1.05,
+                          backgroundColor: "rgba(255,255,255,0.1)"
+                        }}
+                      >
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-r from-emerald-400 to-teal-400 flex items-center justify-center text-sm font-bold text-black mx-auto mb-2">
+                          {i + 1}
+                        </div>
+                        <span className="text-gray-300 text-sm font-medium">{step}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              </motion.div>
+
+              {/* Right Column - Visual */}
+              <motion.div 
+                className="relative"
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4, duration: 0.6 }}
+              >
+                {/* 3D-style visualization container */}
+                <motion.div
+                  className="relative h-96 lg:h-full rounded-2xl overflow-hidden border border-white/20"
+                  whileHover={{ rotateY: 5, rotateX: 2 }}
+                  transition={{ duration: 0.4 }}
+                  style={{ transformStyle: "preserve-3d" }}
+                >
+                  {/* Dynamic background */}
+                  <motion.div 
+                    className={`absolute inset-0 bg-gradient-to-br ${services[activeTab].accent} opacity-80`}
+                    animate={{
+                      scale: [1, 1.1, 1],
+                      rotate: [0, 5, 0]
+                    }}
+                    transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                  
+                  {/* Floating elements */}
+                  <div className="absolute inset-0 overflow-hidden">
+                    {Array.from({ length: 6 }).map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className="absolute w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-white/10 backdrop-blur-sm border border-white/20"
+                        style={{
+                          left: `${20 + Math.random() * 60}%`,
+                          top: `${20 + Math.random() * 60}%`,
+                        }}
+                        animate={{
+                          y: [0, -20, 0],
+                          x: [0, 10, 0],
+                          rotate: [0, 180, 360],
+                          scale: [1, 1.2, 1]
+                        }}
+                        transition={{
+                          duration: 8 + i * 2,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                          delay: i * 0.5
+                        }}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Center icon */}
+                  <motion.div 
+                    className="absolute inset-0 flex items-center justify-center"
+                    animate={{
+                      scale: [1, 1.1, 1],
+                      rotate: [0, 10, -10, 0]
+                    }}
+                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <div className="w-24 h-24 lg:w-32 lg:h-32 rounded-3xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center shadow-2xl">
+                      <div className="text-4xl lg:text-6xl text-white">
+                        {services[activeTab].icon}
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  {/* Floating stats */}
+                  <motion.div
+                    className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-md p-3 rounded-xl shadow-lg border border-white/20"
+                    animate={{
+                      y: [0, -10, 0],
+                    }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                    whileHover={{ scale: 1.1 }}
+                  >
+                    <div className={`text-2xl font-bold bg-gradient-to-r ${services[activeTab].accent} bg-clip-text text-transparent`}>
+                      99%
+                    </div>
+                    <div className="text-xs text-gray-600 font-medium">
+                      Success Rate
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    className="absolute top-4 right-4 bg-white/90 backdrop-blur-md p-3 rounded-xl shadow-lg border border-white/20"
+                    animate={{
+                      y: [0, 10, 0],
+                    }}
+                    transition={{
+                      duration: 5,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: 1
+                    }}
+                    whileHover={{ scale: 1.1 }}
+                  >
+                    <div className={`text-2xl font-bold bg-gradient-to-r ${services[activeTab].accent} bg-clip-text text-transparent`}>
+                      24h
+                    </div>
+                    <div className="text-xs text-gray-600 font-medium">
+                      Response Time
+                    </div>
+                  </motion.div>
+                </motion.div>
+
+                {/* Action buttons */}
+                <motion.div 
+                  className="flex flex-col sm:flex-row gap-4 mt-8"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.9 }}
+                >
+                  <motion.button
+                    className="flex-1 py-4 px-6 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-xl font-semibold text-white flex items-center justify-center gap-2 shadow-lg"
+                    whileHover={{ 
+                      scale: 1.02,
+                      boxShadow: "0 20px 40px rgba(0,166,118,0.3)"
+                    }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    Get Started <FaArrowRight />
+                  </motion.button>
+                  
+                  <motion.button
+                    className="flex-1 sm:flex-initial px-6 py-4 bg-white/10 backdrop-blur-sm rounded-xl font-semibold text-white border border-white/20 flex items-center justify-center gap-2"
+                    whileHover={{ 
+                      scale: 1.02,
+                      backgroundColor: "rgba(255,255,255,0.2)"
+                    }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    View Portfolio
+                  </motion.button>
+                </motion.div>
+              </motion.div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* Additional CSS for gradient animations */}
+      <style jsx>{`
+        @keyframes gradient-xy {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+        .animate-gradient-xy {
+          background-size: 400% 400%;
+          animation: gradient-xy 15s ease infinite;
+        }
+      `}</style>
+    </section>
   const caseStudies = [
     { title: 'E-commerce Redesign', category: 'webdev', result: '+320% conversions', image: 'https://via.placeholder.com/300x200?text=E-commerce' },
     { title: 'Viral Ad Campaign', category: 'marketing', result: '400% engagement surge', image: 'https://via.placeholder.com/300x200?text=Marketing' },
@@ -387,266 +951,10 @@ const ServicesPage = () => {
     </motion.div>
   </div>
 </section>
-
+<ServicesSectionultra />
         {/* Services Section with Glassmorphism Cards */}
-       <section id="services" className="py-28 px-4 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
-  {/* Floating background elements */}
-  <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-    {[...Array(12)].map((_, i) => (
-      <motion.div
-        key={i}
-        className="absolute rounded-full bg-[#00A676]/10"
-        style={{
-          width: Math.random() * 400 + 100,
-          height: Math.random() * 400 + 100,
-          top: `${Math.random() * 100}%`,
-          left: `${Math.random() * 100}%`,
-        }}
-        animate={{
-          y: [0, Math.random() * 100 - 50],
-          x: [0, Math.random() * 100 - 50],
-          rotate: [0, 360],
-        }}
-        transition={{
-          duration: Math.random() * 30 + 20,
-          repeat: Infinity,
-          repeatType: 'reverse',
-          ease: 'linear',
-        }}
-      />
-    ))}
-  </div>
+    
 
-  <div className="container mx-auto max-w-7xl relative z-10">
-    <motion.div
-      className="text-center mb-24"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8 }}
-    >
-      <motion.h2
-        className="text-5xl md:text-7xl font-bold mb-6"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-      >
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00A676] via-[#00C9A7] to-[#008F5D] animate-gradient-x">
-          Digital Excellence
-        </span>
-      </motion.h2>
-      <motion.p
-        className="text-xl text-gray-600 max-w-3xl mx-auto"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ delay: 0.4 }}
-      >
-        Cutting-edge solutions that drive growth and innovation
-      </motion.p>
-    </motion.div>
-
-    {/* Modern service cards grid */}
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-      {Object.entries(services).map(([key, service], index) => (
-        <motion.div
-          key={key}
-          className={`relative group overflow-hidden rounded-2xl shadow-2xl h-[400px] cursor-pointer ${
-            activeTab === key ? 'ring-4 ring-[#00A676]' : ''
-          }`}
-          onClick={() => setActiveTab(key)}
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: index * 0.1, duration: 0.5 }}
-          whileHover={{ y: -10 }}
-        >
-          {/* Animated gradient background */}
-          <div className={`absolute inset-0 bg-gradient-to-br ${service.accent} opacity-80 group-hover:opacity-100 transition-all duration-500`} />
-          
-          {/* Floating service image */}
-          <motion.div
-            className="absolute top-8 right-8 w-24 h-24 rounded-xl bg-white/20 backdrop-blur-md p-4 shadow-lg"
-            animate={{
-              y: [0, 15, 0],
-              rotate: [0, 5, 0],
-            }}
-            transition={{
-              duration: 8 + index * 2,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-          >
-            <div className="text-4xl text-white flex items-center justify-center">
-              {service.icon}
-            </div>
-          </motion.div>
-
-          {/* Sample service image */}
-          <div className="absolute inset-0 overflow-hidden">
-            <img
-              src={
-                key === 'webdev' ? 'https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80' :
-                key === 'marketing' ? 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80' :
-                key === 'video' ? 'https://images.unsplash.com/photo-1579389083078-4e7018379f7e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80' :
-                'https://images.unsplash.com/photo-1522542550221-31fd19575a2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80'
-              }
-              alt={service.title}
-              className="w-full h-full object-cover opacity-30 group-hover:opacity-40 transition-all duration-500"
-            />
-          </div>
-
-          {/* Content */}
-          <div className="relative h-full flex flex-col justify-end p-8 text-white">
-            <motion.h3
-              className="text-3xl font-bold mb-4"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              {service.title}
-            </motion.h3>
-            <motion.p
-              className="mb-6 opacity-90"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-              {service.content}
-            </motion.p>
-            <motion.div
-              className="flex flex-wrap gap-2 mb-6"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-            >
-              {service.benefits.map((benefit, i) => (
-                <span
-                  key={i}
-                  className="px-3 py-1 bg-white/10 backdrop-blur-sm rounded-full text-sm"
-                >
-                  {benefit}
-                </span>
-              ))}
-            </motion.div>
-            <motion.button
-              className="self-start px-6 py-3 bg-white text-[#00A676] rounded-lg font-medium flex items-center gap-2 mt-4"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Learn more <FaArrowRight />
-            </motion.button>
-          </div>
-        </motion.div>
-      ))}
-    </div>
-
-    {/* Expanded service details */}
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={activeTab}
-        className="mt-16 bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border border-white/20"
-        initial={{ opacity: 0, height: 0 }}
-        animate={{ opacity: 1, height: 'auto' }}
-        exit={{ opacity: 0, height: 0 }}
-        transition={{ duration: 0.5, ease: 'easeInOut' }}
-      >
-        <div className="grid lg:grid-cols-2 gap-12 p-12">
-          <div>
-            <motion.h3
-              className="text-4xl font-bold mb-8 bg-gradient-to-r from-[#00A676] to-[#008F5D] text-transparent bg-clip-text"
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              {services[activeTab].title} Solutions
-            </motion.h3>
-            
-            <motion.div
-              className="space-y-6"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
-              <p className="text-lg text-gray-700 leading-relaxed">
-                {services[activeTab].content}
-              </p>
-              
-              <div className="bg-gradient-to-r from-[#00A676]/10 to-transparent p-6 rounded-xl">
-                <h4 className="text-xl font-semibold mb-4">Our Approach</h4>
-                <ul className="space-y-3">
-                  {[
-                    'Data-driven decision making',
-                    'Cutting-edge technology',
-                    'User-centric design',
-                    'Measurable results'
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start">
-                      <FaCheckCircle className="text-[#00A676] mt-1 mr-3 flex-shrink-0" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </motion.div>
-          </div>
-
-          <div className="relative h-96 lg:h-auto">
-            {/* Interactive 3D service visualization */}
-            <motion.div
-              className="relative h-full w-full rounded-2xl overflow-hidden"
-              whileHover={{ scale: 0.98 }}
-              transition={{ duration: 0.3 }}
-            >
-              <img
-                src={
-                  activeTab === 'webdev' ? 'https://images.unsplash.com/photo-1626785774573-4b799315345d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80' :
-                  activeTab === 'marketing' ? 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1115&q=80' :
-                  activeTab === 'video' ? 'https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1168&q=80' :
-                  'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80'
-                }
-                alt={services[activeTab].title}
-                className="w-full h-full object-cover rounded-2xl"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#00A676]/70 via-transparent to-transparent" />
-              
-              {/* Floating stats */}
-              <motion.div
-                className="absolute bottom-8 left-8 bg-white/90 backdrop-blur-md p-4 rounded-xl shadow-lg"
-                animate={{
-                  y: [0, -10, 0],
-                }}
-                transition={{
-                  duration: 6,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
-                }}
-              >
-                <div className="text-3xl font-bold text-[#00A676]">95%</div>
-                <div className="text-sm">Client Satisfaction</div>
-              </motion.div>
-              
-              <motion.div
-                className="absolute top-8 right-8 bg-white/90 backdrop-blur-md p-4 rounded-xl shadow-lg"
-                animate={{
-                  y: [0, 10, 0],
-                }}
-                transition={{
-                  duration: 5,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
-                  delay: 1,
-                }}
-              >
-                <div className="text-3xl font-bold text-[#00A676]">200+</div>
-                <div className="text-sm">Projects Completed</div>
-              </motion.div>
-            </motion.div>
-          </div>
-        </div>
-      </motion.div>
-    </AnimatePresence>
-  </div>
-</section>
 
         {/* Case Studies Section */}
         <section className="py-28 px-4 bg-[#E6F7F2]">
