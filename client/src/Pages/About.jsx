@@ -130,105 +130,308 @@ const AboutUsPage = () => {
   return (
     <div className="min-h-screen bg-white text-gray-900 font-sans overflow-x-hidden">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-40 px-6 overflow-hidden bg-gradient-to-b from-white to-gray-50">
-        {/* Animated background */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(6)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute rounded-full bg-gradient-to-br from-teal-100 to-blue-100 blur-3xl"
-              style={{
-                width: `${Math.random() * 400 + 200}px`,
-                height: `${Math.random() * 400 + 200}px`,
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`
-              }}
-              animate={{
-                x: [0, (Math.random() - 0.5) * 100],
-                y: [0, (Math.random() - 0.5) * 100],
-                opacity: [0.05, 0.1, 0.05]
-              }}
-              transition={{
-                duration: Math.random() * 20 + 15,
-                repeat: Infinity,
-                repeatType: "reverse",
-                ease: "easeInOut"
-              }}
-            />
-          ))}
-        </div>
+     <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-6 bg-gradient-to-b from-white to-gray-50">
+  {/* Dynamic Particle Background */}
+  <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    {/* Floating gradient orbs */}
+    {[...Array(12)].map((_, i) => (
+      <motion.div
+        key={i}
+        className="absolute rounded-full bg-gradient-to-br from-teal-100/40 to-blue-100/40"
+        style={{
+          width: `${Math.random() * 600 + 300}px`,
+          height: `${Math.random() * 600 + 300}px`,
+          left: `${Math.random() * 100}%`,
+          top: `${Math.random() * 100}%`,
+          filter: 'blur(80px)'
+        }}
+        animate={{
+          x: [0, (Math.random() - 0.5) * 200],
+          y: [0, (Math.random() - 0.5) * 100],
+          opacity: [0.03, 0.1, 0.03]
+        }}
+        transition={{
+          duration: Math.random() * 25 + 15,
+          repeat: Infinity,
+          repeatType: "reverse",
+          ease: "easeInOut"
+        }}
+      />
+    ))}
+    
+    {/* Micro particles */}
+    {[...Array(60)].map((_, i) => (
+      <motion.div
+        key={`particle-${i}`}
+        className="absolute rounded-full bg-teal-400/10"
+        style={{
+          width: `${Math.random() * 6 + 2}px`,
+          height: `${Math.random() * 6 + 2}px`,
+          left: `${Math.random() * 100}%`,
+          top: `${Math.random() * 100}%`
+        }}
+        animate={{
+          x: [0, (Math.random() - 0.5) * 100],
+          y: [0, (Math.random() - 0.5) * 50],
+          opacity: [0.1, 0.4, 0.1]
+        }}
+        transition={{
+          duration: Math.random() * 15 + 10,
+          repeat: Infinity,
+          repeatType: "reverse"
+        }}
+      />
+    ))}
+  </div>
 
-        <div className="max-w-7xl mx-auto relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
-            className="text-center max-w-4xl mx-auto"
+  {/* Floating abstract shapes */}
+  <motion.div 
+    className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-teal-100/30 blur-[100px]"
+    animate={{
+      y: [0, -40, 0],
+      opacity: [0.2, 0.3, 0.2]
+    }}
+    transition={{
+      duration: 12,
+      repeat: Infinity,
+      ease: "easeInOut"
+    }}
+  />
+  <motion.div 
+    className="absolute bottom-1/3 right-1/4 w-72 h-72 rounded-full bg-blue-100/30 blur-[100px]"
+    animate={{
+      y: [0, 40, 0],
+      opacity: [0.2, 0.3, 0.2]
+    }}
+    transition={{
+      duration: 15,
+      repeat: Infinity,
+      ease: "easeInOut",
+      delay: 3
+    }}
+  />
+
+  {/* Main content */}
+  <div className="max-w-7xl mx-auto relative z-10 px-4">
+    <motion.div
+      initial={{ opacity: 0, y: 60 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
+      className="text-center"
+    >
+      {/* Animated badge */}
+      <motion.div 
+        className="inline-flex items-center px-6 py-2.5 bg-white/80 backdrop-blur-sm rounded-full mb-8 border border-gray-200 shadow-sm"
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 0.3 }}
+      >
+        <motion.span
+          className="flex items-center text-sm font-medium text-teal-600"
+          animate={{
+            opacity: [0.8, 1, 0.8]
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        >
+          <svg className="w-4 h-4 mr-2 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+          </svg>
+          Trusted by 500+ Brands Worldwide
+        </motion.span>
+      </motion.div>
+      
+      {/* Headline with advanced animation */}
+      <motion.h1 
+        className="text-5xl md:text-8xl font-bold mb-8 leading-tight"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        <span className="relative inline-block overflow-hidden">
+          <motion.span
+            className="block text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-blue-500"
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            transition={{ delay: 0.2, duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
           >
-            <motion.div 
-              className="inline-flex items-center px-5 py-2 bg-teal-100 rounded-full mb-8 border border-teal-200"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
-              <span className="text-sm font-medium text-teal-800">Innovation Since 2020</span>
-            </motion.div>
-            
-            <motion.h1 
-              className="text-5xl md:text-7xl font-bold mb-8 leading-tight"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-blue-500">
-                Redefining Digital Excellence
-              </span>
-            </motion.h1>
-            
-            <motion.p 
-              className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-            >
-              We architect transformative digital experiences that propel brands into the future.
-            </motion.p>
-            
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-            >
-              <motion.a
-                href="#about"
-                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-teal-600 to-blue-500 text-white rounded-full font-medium shadow-xl hover:shadow-teal-300/50 transition-all group"
-                whileHover={{ 
-                  y: -5,
-                  scale: 1.05,
-                  background: "linear-gradient(to right, #0d9488, #0ea5e9)"
-                }}
-                whileTap={{ scale: 0.98 }}
-              >
-                Explore Our Story
-                <FaArrowRight className="ml-3 group-hover:translate-x-1 transition-transform" />
-              </motion.a>
-            </motion.div>
-          </motion.div>
-        </div>
+            Crafting Digital
+          </motion.span>
+          <motion.div
+            className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-teal-600 to-blue-500"
+            initial={{ width: 0 }}
+            animate={{ width: "100%" }}
+            transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
+          />
+        </span>
+        <span className="relative inline-block overflow-hidden">
+          <motion.span
+            className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400"
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            transition={{ delay: 0.4, duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+          >
+            Masterpieces Since
+          </motion.span>
+          <motion.div
+            className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-blue-500 to-teal-400"
+            initial={{ width: 0 }}
+            animate={{ width: "100%" }}
+            transition={{ delay: 0.6, duration: 0.8, ease: "easeOut" }}
+          />
+        </span>
+        <span className="relative inline-block overflow-hidden">
+          <motion.span
+            className="block text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-600"
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            transition={{ delay: 0.6, duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+          >
+            2020
+          </motion.span>
+          <motion.div
+            className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-teal-400 to-blue-600"
+            initial={{ width: 0 }}
+            animate={{ width: "100%" }}
+            transition={{ delay: 0.8, duration: 0.8, ease: "easeOut" }}
+          />
+        </span>
+      </motion.h1>
+      
+      {/* Description with fade-in */}
+      <motion.p 
+        className="text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.0, duration: 0.8 }}
+      >
+        We're a passionate collective of designers, developers, and strategists dedicated to pushing the boundaries of digital innovation.
+      </motion.p>
+      
+      {/* CTA buttons with advanced effects */}
+      <motion.div
+        className="flex flex-col sm:flex-row justify-center gap-6"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.2, duration: 0.6 }}
+      >
+        <motion.a
+          href="#story"
+          className="relative px-10 py-4 bg-gradient-to-r from-teal-600 to-blue-500 text-white rounded-full font-bold shadow-2xl overflow-hidden group"
+          whileHover={{
+            scale: 1.05,
+            boxShadow: "0 20px 40px rgba(13, 148, 136, 0.4)"
+          }}
+          whileTap={{ scale: 0.98 }}
+          transition={{ duration: 0.3 }}
+        >
+          <motion.span
+            className="absolute inset-0 bg-white/10 backdrop-blur-sm opacity-0 group-hover:opacity-100"
+            transition={{ duration: 0.3 }}
+          />
+          <motion.span
+            className="absolute inset-0 bg-gradient-to-r from-teal-700 to-blue-600 opacity-0 group-hover:opacity-100"
+            transition={{ duration: 0.3 }}
+          />
+          <span className="relative z-10 flex items-center justify-center gap-2">
+            Our Story
+            <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </span>
+        </motion.a>
 
-        {/* Floating elements */}
-        <motion.div 
-          className="absolute bottom-20 left-10 w-32 h-32 rounded-full bg-teal-100/80 blur-xl"
-          animate="float"
-          variants={floatAnimation}
-        />
-        <motion.div 
-          className="absolute top-1/4 right-20 w-40 h-40 rounded-full bg-blue-100/80 blur-xl"
-          animate="float"
-          variants={floatAnimation}
-          transition={{ delay: 2 }}
-        />
-      </section>
+        <motion.a
+          href="#team"
+          className="relative px-10 py-4 bg-white/80 backdrop-blur-sm text-teal-600 rounded-full font-bold border-2 border-teal-100 shadow-sm overflow-hidden group"
+          whileHover={{
+            backgroundColor: "rgba(255, 255, 255, 1)",
+            boxShadow: "0 10px 30px rgba(0, 0, 0, 0.1)",
+            scale: 1.05
+          }}
+          whileTap={{ scale: 0.98 }}
+          transition={{ duration: 0.3 }}
+        >
+          <motion.span
+            className="absolute inset-0 bg-teal-600/5 group-hover:bg-teal-600/10"
+            transition={{ duration: 0.3 }}
+          />
+          <span className="relative z-10 flex items-center justify-center gap-2">
+            Meet The Team
+            <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+          </span>
+        </motion.a>
+      </motion.div>
+    </motion.div>
+
+    {/* Floating stats showcase */}
+    <motion.div
+      className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-24 max-w-5xl mx-auto"
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 1.4, duration: 0.8 }}
+    >
+      {[
+        { value: "500+", label: "Projects Completed" },
+        { value: "95%", label: "Client Retention" },
+        { value: "4.9", label: "Average Rating" },
+        { value: "50+", label: "Team Members" }
+      ].map((stat, index) => (
+        <motion.div
+          key={stat.label}
+          className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-gray-100 shadow-sm"
+          whileHover={{ 
+            y: -10,
+            boxShadow: "0 15px 30px rgba(0, 0, 0, 0.05)"
+          }}
+          transition={{ duration: 0.3 }}
+        >
+          <motion.p 
+            className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-blue-500 mb-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.6 + index * 0.1 }}
+          >
+            {stat.value}
+          </motion.p>
+          <p className="text-gray-600">{stat.label}</p>
+        </motion.div>
+      ))}
+    </motion.div>
+  </div>
+
+  {/* Floating decorative elements */}
+  <motion.div 
+    className="absolute bottom-20 left-10 w-32 h-32 rounded-full bg-teal-100/80 blur-xl"
+    animate={{
+      y: [0, -30, 0],
+      rotate: [0, 10, 0]
+    }}
+    transition={{
+      duration: 12,
+      repeat: Infinity,
+      ease: "easeInOut"
+    }}
+  />
+  <motion.div 
+    className="absolute top-1/4 right-20 w-40 h-40 rounded-full bg-blue-100/80 blur-xl"
+    animate={{
+      y: [0, 30, 0],
+      rotate: [0, -10, 0]
+    }}
+    transition={{
+      duration: 15,
+      repeat: Infinity,
+      ease: "easeInOut",
+      delay: 2
+    }}
+  />
+</section>
 
       {/* About Section */}
       <section id="about" ref={ref} className="py-32 px-6 bg-white">
