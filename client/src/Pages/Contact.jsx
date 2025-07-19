@@ -123,90 +123,197 @@ const ContactPage = () => {
   return (
     <div className="min-h-screen font-sans text-gray-800">
       {/* Hero Section */}
-      <section className="relative h-screen overflow-hidden bg-gradient-to-br from-[#00A676] via-[#00A676] to-[#007D5D]">
-  <div className="absolute inset-0 bg-[url('https://via.placeholder.com/1920x1080?text=Digital+Horizon')] bg-cover bg-center opacity-25"></div>
-  <div className="absolute inset-0 bg-gradient-to-br from-rgba(0,166,118,0.1) to-transparent opacity-90"></div>
-  {Array(30).fill().map((_, i) => {
-    const speed = Math.random() * 1.5 + 0.5;
-    return (
+    <section className="relative min-h-screen overflow-hidden bg-white">
+  {/* Floating abstract shapes */}
+  <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    {/* Green accent shapes */}
+    {[...Array(8)].map((_, i) => (
       <motion.div
         key={i}
-        className="absolute rounded-full bg-white/70"
-        style={{ left: `${Math.random() * 100}vw`, top: `${Math.random() * 100}vh`, width: Math.random() * 4 + 1, height: Math.random() * 4 + 1 }}
+        className="absolute rounded-full bg-[#00A676]/10"
+        style={{
+          width: `${Math.random() * 300 + 100}px`,
+          height: `${Math.random() * 300 + 100}px`,
+          left: `${Math.random() * 100}%`,
+          top: `${Math.random() * 100}%`,
+          filter: 'blur(60px)'
+        }}
         animate={{
-          scale: [1, 1.3 + (Math.random() * 4 + 1) / 5, 1],
-          opacity: [0.4, 0.8, 0.4],
-          x: [0, Math.random() * 60 - 30, 0],
-          y: [0, Math.random() * 60 - 30, 0]
+          x: [0, (Math.random() - 0.5) * 200],
+          y: [0, (Math.random() - 0.5) * 100],
+          opacity: [0.05, 0.15, 0.05]
         }}
         transition={{
-          duration: Math.max(2 / speed, 0.1), // Ensure minimum duration of 0.1s
+          duration: Math.random() * 20 + 15,
           repeat: Infinity,
-          delay: Math.random() * 3
+          repeatType: "reverse",
+          ease: "easeInOut"
         }}
       />
-    );
-  })}
-  <div className="relative z-10 h-full flex items-center justify-center text-center px-6 py-16">
+    ))}
+  </div>
+
+  {/* Main content */}
+  <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6 py-20 max-w-7xl mx-auto">
     <motion.div
       initial={{ opacity: 0, y: 60 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1.5, ease: "easeOut" }}
+      transition={{ duration: 1, ease: "easeOut" }}
+      className="w-full"
     >
-      <motion.h1
-        className="text-7xl md:text-8xl font-extrabold mb-8 leading-tight"
-        style={{
-          background: 'linear-gradient(45deg, #76C893, #4DD0A0)',
-          WebkitBackgroundClip: 'text',
-          backgroundClip: 'text',
-          color: 'transparent',
-          textShadow: '0 0 15px rgba(118, 200, 147, 0.8), 0 0 30px rgba(0, 166, 118, 0.5)'
-        }}
-        animate={{
-          scale: [1, 1.08, 1],
-          textShadow: [
-            '0 0 15px rgba(118, 200, 147, 0.8)',
-            '0 0 30px rgba(118, 200, 147, 0.8)',
-            '0 0 15px rgba(118, 200, 147, 0.8)'
-          ]
-        }}
-        transition={{ duration: 2.5, repeat: Infinity, repeatType: "reverse" }}
+      {/* Animated badge */}
+      <motion.div 
+        className="inline-flex items-center px-5 py-2 bg-[#00A676]/10 rounded-full mb-8 border border-[#00A676]/20"
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 0.3 }}
+        whileHover={{ scale: 1.05 }}
       >
-        Ignite Your Digital Revolution
+        <span className="flex items-center text-sm font-medium text-[#008F5D] font-poppins">
+          <motion.span
+            className="inline-block w-2 h-2 mr-2 rounded-full bg-[#00A676]"
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.6, 1, 0.6]
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity
+            }}
+          />
+          Let's Collaborate
+        </span>
+      </motion.div>
+      
+      {/* Headline with green accent */}
+      <motion.h1
+        className="text-4xl md:text-6xl font-bold mb-8 leading-tight font-poppins"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 0.8 }}
+      >
+        <span className="text-black">Connect With Our </span>
+        <span className="text-[#00A676]">Creative Team</span>
       </motion.h1>
+      
+      {/* Description */}
       <motion.p
-        className="text-xl md:text-2xl mb-10 max-w-5xl mx-auto text-white/90 font-medium"
+        className="text-lg md:text-xl mb-12 max-w-3xl mx-auto text-gray-600 leading-relaxed font-open-sans"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.7, duration: 1.5 }}
+        transition={{ delay: 0.4, duration: 0.8 }}
       >
-        Join forces with Infiow to redefine your digital presence with groundbreaking innovations and bespoke strategies tailored to your vision.
+        Ready to bring your ideas to life? Our team of experts is here to turn your vision into reality with innovative digital solutions.
       </motion.p>
-      <motion.div className="space-x-6">
+      
+      {/* CTA buttons */}
+      <motion.div 
+        className="flex flex-col sm:flex-row justify-center gap-6"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.6 }}
+      >
         <motion.a
           href="#contact-form"
-          className="inline-block px-12 py-5 bg-[#76C893] text-white font-bold rounded-lg shadow-xl hover:bg-[#007D5D] transition-all duration-400"
-          whileHover={{ scale: 1.15, boxShadow: '0 0 20px rgba(118, 200, 147, 0.6)' }}
+          className="relative px-8 py-4 bg-[#00A676] text-white font-bold rounded-lg shadow-md hover:shadow-lg transition-all font-poppins"
+          whileHover={{ 
+            scale: 1.05,
+            backgroundColor: "#008F5D",
+            boxShadow: '0 10px 25px rgba(0, 166, 118, 0.3)'
+          }}
           whileTap={{ scale: 0.95 }}
         >
-          Start Your Journey
+          Get In Touch
         </motion.a>
+        
         <motion.a
           href="#"
-          className="inline-block px-12 py-5 bg-white/80 text-[#00A676] font-bold rounded-lg shadow-xl hover:bg-[#4DD0A0] transition-all duration-400"
-          whileHover={{ scale: 1.15, boxShadow: '0 0 20px rgba(77, 208, 160, 0.6)' }}
+          className="relative px-8 py-4 bg-white text-[#00A676] font-bold rounded-lg border-2 border-[#00A676] hover:bg-[#00A676]/10 transition-all font-poppins"
+          whileHover={{ 
+            scale: 1.05,
+            boxShadow: '0 10px 25px rgba(0, 166, 118, 0.1)'
+          }}
           whileTap={{ scale: 0.95 }}
         >
-          Discover More
+          Schedule Call
         </motion.a>
       </motion.div>
     </motion.div>
+
+    {/* Contact cards */}
+    <motion.div 
+      className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-24 w-full"
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.8 }}
+    >
+      {[
+        {
+          icon: (
+            <svg className="w-10 h-10" fill="none" stroke="#00A676" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+          ),
+          title: "Email Us",
+          description: "Get a response within 24 hours",
+          content: "contact@infiow.com",
+          link: "mailto:contact@infiow.com"
+        },
+        {
+          icon: (
+            <svg className="w-10 h-10" fill="none" stroke="#00A676" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+            </svg>
+          ),
+          title: "Call Us",
+          description: "Mon-Fri, 9am-6pm EST",
+          content: "+1 (123) 456-7890",
+          link: "tel:+11234567890"
+        },
+        {
+          icon: (
+            <svg className="w-10 h-10" fill="none" stroke="#00A676" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          ),
+          title: "Visit Us",
+          description: "Schedule an in-person meeting",
+          content: "123 Digital Lane, Tech City",
+          link: "#"
+        }
+      ].map((item, index) => (
+        <motion.div 
+          key={index}
+          className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all"
+          whileHover={{ y: -8 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className="mb-4">
+            {item.icon}
+          </div>
+          <h3 className="text-xl font-bold text-gray-800 mb-2 font-poppins">{item.title}</h3>
+          <p className="text-gray-500 mb-4 font-open-sans">{item.description}</p>
+          {item.link ? (
+            <a href={item.link} className="text-[#00A676] hover:text-[#008F5D] transition-colors font-medium font-open-sans">
+              {item.content}
+            </a>
+          ) : (
+            <p className="text-[#00A676] font-medium font-open-sans">{item.content}</p>
+          )}
+        </motion.div>
+      ))}
+    </motion.div>
+
+    {/* Animated scroll indicator */}
     <motion.div
       className="absolute bottom-12 left-1/2 transform -translate-x-1/2"
-      animate={{ y: [0, 20, 0], opacity: [0.6, 1, 0.6] }}
-      transition={{ duration: 2.5, repeat: Infinity }}
+      animate={{ y: [0, 15, 0], opacity: [0.6, 1, 0.6] }}
+      transition={{ duration: 2, repeat: Infinity }}
     >
-      <FaChevronDown className="text-5xl text-white drop-shadow-lg" />
+      <svg className="w-8 h-8 text-[#00A676]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+      </svg>
     </motion.div>
   </div>
 </section>
