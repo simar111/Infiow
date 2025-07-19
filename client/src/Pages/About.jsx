@@ -1,11 +1,30 @@
 import { motion, useAnimation, useInView } from 'framer-motion';
-import { useEffect, useRef } from 'react';
-import { FaLinkedin, FaTwitter, FaArrowRight } from 'react-icons/fa';
+import { useEffect, useRef ,useState} from 'react';
+import { FaLinkedin, FaTwitter, FaArrowRight,FaChevronLeft,FaChevronRight } from 'react-icons/fa';
 
 const AboutUsPage = () => {
   const controls = useAnimation();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, amount: 0.1 });
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+const handleNavigation = (direction) => {
+  if (direction === 'prev') {
+    setCurrentIndex((prev) => (prev === 0 ? teamMembers.length - 1 : prev - 1));
+  } else {
+    setCurrentIndex((prev) => (prev === teamMembers.length - 1 ? 0 : prev + 1));
+  }
+};
+
+const getPosition = (index, currentIndex) => {
+  const diff = index - currentIndex;
+  const length = teamMembers.length;
+
+  if (diff === 0) return 'center';
+  if (diff === -1 || (currentIndex === 0 && index === length - 1)) return 'left';
+  if (diff === 1 || (currentIndex === length - 1 && index === 0)) return 'right';
+  return 'hidden';
+};
 
   useEffect(() => {
     if (isInView) {
@@ -535,72 +554,129 @@ const AboutUsPage = () => {
       </section>
 
       {/* Team Section */}
-      <section className="py-32 px-6 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            className="text-center mb-24"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-blue-500">
-                The Minds Behind The Magic
-              </span>
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Our team of visionaries, creators, and problem-solvers
-            </p>
-          </motion.div>
+  <section className="py-32 px-4 sm:px-6 bg-gradient-to-b from-gray-50 to-white">
+  <div className="max-w-7xl mx-auto">
+    {/* Section header */}
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      className="text-center mb-20"
+    >
+      <motion.h2
+        className="text-4xl md:text-6xl font-bold mb-6"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+      >
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00A676] to-[#008F5D]">
+          The Minds Behind The Magic
+        </span>
+      </motion.h2>
+      <motion.p
+        className="text-xl text-gray-600 max-w-3xl mx-auto"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ delay: 0.4 }}
+      >
+        Our team of visionaries, creators, and problem-solvers
+      </motion.p>
+    </motion.div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {teamMembers.map((member, index) => (
+    {/* 3D Carousel Container */}
+    <div className="relative w-full flex justify-center">
+      {/* Carousel Viewport */}
+      <div className="relative w-full max-w-4xl h-[600px] md:h-[700px] perspective-1000 overflow-visible">
+        {/* Navigation arrows */}
+        <button 
+          className="absolute left-0 md:-left-12 top-1/2 z-20 -translate-y-1/2 bg-white/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-[#00A676] hover:text-white transition-all"
+          onClick={() => handleNavigation('prev')}
+        >
+          <FaChevronLeft className="w-5 h-5" />
+        </button>
+        <button 
+          className="absolute right-0 md:-right-12 top-1/2 z-20 -translate-y-1/2 bg-white/80 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-[#00A676] hover:text-white transition-all"
+          onClick={() => handleNavigation('next')}
+        >
+          <FaChevronRight className="w-5 h-5" />
+        </button>
+
+        {/* Team members carousel */}
+        <div className="relative w-full h-full">
+          {teamMembers.map((member, index) => {
+            const position = getPosition(index, currentIndex);
+            const zIndex = position === 'center' ? 10 : position === 'left' || position === 'right' ? 5 : 1;
+            
+            return (
               <motion.div
                 key={member.id}
-                className="bg-white rounded-2xl overflow-hidden border border-gray-200 hover:border-teal-300 transition-all shadow-sm"
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, type: "spring" }}
-                viewport={{ once: true, margin: "-50px" }}
-                whileHover="hover"
-                variants={cardHover}
+                className={`absolute w-full max-w-[300px] h-[500px] left-1/2 -translate-x-1/2`}
+                style={{
+                  zIndex,
+                }}
+                animate={{
+                  x: position === 'center' ? '-50%' : position === 'left' ? '-120%' : '20%',
+                  scale: position === 'center' ? 1 : 0.8,
+                  opacity: position === 'hidden' ? 0 : position === 'center' ? 1 : 0.7,
+                  rotateY: position === 'center' ? 0 : position === 'left' ? -15 : 15
+                }}
+                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                onClick={() => position !== 'center' && setCurrentIndex(index)}
               >
-                <div className="relative h-80 bg-gray-100 overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-t from-white/70 via-white/30 to-transparent z-10"></div>
-                  <motion.div 
-                    className="absolute inset-0 flex items-center justify-center"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.4 }}
-                  >
-                    <div className="w-40 h-40 rounded-full border-2 border-white overflow-hidden bg-gray-200 flex items-center justify-center shadow-lg">
-                      <img 
-                        src={member.image} 
-                        alt={member.name}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
+                <div className={`h-full bg-white rounded-3xl overflow-hidden border-2 ${position === 'center' ? 'border-[#00A676]' : 'border-gray-200'} shadow-xl transition-all duration-300`}>
+                  {/* Team member image with gradient overlay */}
+                  <div className="relative h-1/2 bg-gray-100 overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-t from-white/70 via-white/30 to-transparent z-10"></div>
+                    <motion.div 
+                      className="absolute inset-0 flex items-center justify-center"
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.4 }}
+                    >
+                      <div className="w-40 h-40 rounded-full border-4 border-white overflow-hidden bg-gray-200 flex items-center justify-center shadow-2xl">
+                        <img 
+                          src={member.image} 
+                          alt={member.name}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                      </div>
+                    </motion.div>
+                  </div>
+
+                  {/* Team member info */}
+                  <div className="p-6 text-center h-1/2 flex flex-col">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">{member.name}</h3>
+                    <p className="text-[#00A676] font-medium mb-4">{member.role}</p>
+                    <p className="text-gray-600 mb-6 flex-grow">{member.bio}</p>
+                    <div className="flex justify-center space-x-4">
+                      <a href={member.social.linkedin} className="text-gray-500 hover:text-[#00A676] transition-colors">
+                        <FaLinkedin size={20} />
+                      </a>
+                      <a href={member.social.twitter} className="text-gray-500 hover:text-blue-500 transition-colors">
+                        <FaTwitter size={20} />
+                      </a>
                     </div>
-                  </motion.div>
-                </div>
-                <div className="p-6 text-center">
-                  <h3 className="text-xl font-bold text-gray-900">{member.name}</h3>
-                  <p className="text-teal-600 mb-4">{member.role}</p>
-                  <p className="text-gray-600 mb-6">{member.bio}</p>
-                  <div className="flex justify-center space-x-4">
-                    <a href={member.social.linkedin} className="text-gray-500 hover:text-teal-600 transition-colors">
-                      <FaLinkedin size={18} />
-                    </a>
-                    <a href={member.social.twitter} className="text-gray-500 hover:text-blue-500 transition-colors">
-                      <FaTwitter size={18} />
-                    </a>
                   </div>
                 </div>
               </motion.div>
-            ))}
-          </div>
+            );
+          })}
         </div>
-      </section>
 
+        {/* Dots indicator */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-20">
+          {teamMembers.map((_, index) => (
+            <button
+              key={index}
+              className={`w-3 h-3 rounded-full transition-all ${currentIndex === index ? 'bg-[#00A676] w-6' : 'bg-gray-300'}`}
+              onClick={() => setCurrentIndex(index)}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
       {/* Timeline Section */}
       <section className="py-32 px-6 bg-white relative">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
