@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { FaCode, FaBullhorn, FaVideo, FaPalette, FaExternalLinkAlt, FaRocket, FaStar } from 'react-icons/fa';
+import { FaCode, FaBullhorn, FaVideo, FaPalette, FaExternalLinkAlt, FaRocket, FaStar ,FaArrowRight,FaCheckCircle} from 'react-icons/fa';
 
 const ServicesPage = () => {
   const [activeTab, setActiveTab] = useState('webdev');
@@ -389,178 +389,264 @@ const ServicesPage = () => {
 </section>
 
         {/* Services Section with Glassmorphism Cards */}
-        <section id="services" className="py-28 px-4">
-          <div className="container mx-auto max-w-6xl">
-            <motion.h2
-              className="text-4xl md:text-5xl font-extrabold mb-20 text-center"
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-100px' }}
-              transition={{ duration: 0.8 }}
-            >
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00A676] to-[#008F5D]">
-                Our Expertise
-              </span>
-            </motion.h2>
+       <section id="services" className="py-28 px-4 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+  {/* Floating background elements */}
+  <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+    {[...Array(12)].map((_, i) => (
+      <motion.div
+        key={i}
+        className="absolute rounded-full bg-[#00A676]/10"
+        style={{
+          width: Math.random() * 400 + 100,
+          height: Math.random() * 400 + 100,
+          top: `${Math.random() * 100}%`,
+          left: `${Math.random() * 100}%`,
+        }}
+        animate={{
+          y: [0, Math.random() * 100 - 50],
+          x: [0, Math.random() * 100 - 50],
+          rotate: [0, 360],
+        }}
+        transition={{
+          duration: Math.random() * 30 + 20,
+          repeat: Infinity,
+          repeatType: 'reverse',
+          ease: 'linear',
+        }}
+      />
+    ))}
+  </div>
 
-            {/* Tabs with Micro-Animations */}
-            <div className="flex flex-wrap justify-center gap-4 mb-20">
-              {Object.entries(services).map(([key, service], index) => (
-                <motion.button
-                  key={key}
-                  className={`px-8 py-4 rounded-full font-medium flex items-center space-x-4 transition-all relative overflow-hidden backdrop-blur-sm ${
-                    activeTab === key
-                      ? `bg-gradient-to-r ${service.accent} text-[#FFFFFF] shadow-lg`
-                      : 'bg-[#FFFFFF]/80 text-[#000000] border border-[#00A676]/30 hover:bg-[#E6F7F2]'
-                  }`}
-                  onClick={() => setActiveTab(key)}
-                  whileHover={{
-                    scale: 1.06,
-                    boxShadow: '0 10px 25px rgba(0, 166, 118, 0.3)',
-                  }}
-                  whileTap={{ scale: 0.94 }}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1, duration: 0.4 }}
-                >
-                  <motion.span
-                    className="absolute inset-0 bg-[#008F5D] opacity-0"
-                    whileHover={{ opacity: activeTab === key ? 0 : 0.2 }}
-                    transition={{ duration: 0.3 }}
-                  />
-                  <div className="text-2xl relative z-10">{service.icon}</div>
-                  <span className="relative z-10">{service.title}</span>
-                </motion.button>
-              ))}
+  <div className="container mx-auto max-w-7xl relative z-10">
+    <motion.div
+      className="text-center mb-24"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
+    >
+      <motion.h2
+        className="text-5xl md:text-7xl font-bold mb-6"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+      >
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00A676] via-[#00C9A7] to-[#008F5D] animate-gradient-x">
+          Digital Excellence
+        </span>
+      </motion.h2>
+      <motion.p
+        className="text-xl text-gray-600 max-w-3xl mx-auto"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ delay: 0.4 }}
+      >
+        Cutting-edge solutions that drive growth and innovation
+      </motion.p>
+    </motion.div>
+
+    {/* Modern service cards grid */}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      {Object.entries(services).map(([key, service], index) => (
+        <motion.div
+          key={key}
+          className={`relative group overflow-hidden rounded-2xl shadow-2xl h-[400px] cursor-pointer ${
+            activeTab === key ? 'ring-4 ring-[#00A676]' : ''
+          }`}
+          onClick={() => setActiveTab(key)}
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: index * 0.1, duration: 0.5 }}
+          whileHover={{ y: -10 }}
+        >
+          {/* Animated gradient background */}
+          <div className={`absolute inset-0 bg-gradient-to-br ${service.accent} opacity-80 group-hover:opacity-100 transition-all duration-500`} />
+          
+          {/* Floating service image */}
+          <motion.div
+            className="absolute top-8 right-8 w-24 h-24 rounded-xl bg-white/20 backdrop-blur-md p-4 shadow-lg"
+            animate={{
+              y: [0, 15, 0],
+              rotate: [0, 5, 0],
+            }}
+            transition={{
+              duration: 8 + index * 2,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }}
+          >
+            <div className="text-4xl text-white flex items-center justify-center">
+              {service.icon}
             </div>
+          </motion.div>
 
-            {/* Service Content with 3D Effects */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                className="bg-[#FFFFFF]/80 backdrop-blur-md rounded-2xl border border-[#00A676]/20 shadow-xl overflow-hidden"
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -40 }}
-                transition={{ duration: 0.5, ease: 'easeInOut' }}
-              >
-                <div className="grid md:grid-cols-2 gap-12 p-8 md:p-12">
-                  <div>
-                    <motion.h3
-                      className="text-3xl md:text-4xl font-bold mb-6 text-[#000000]"
-                      initial={{ opacity: 0, x: -30 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.2, duration: 0.5 }}
-                    >
-                      {services[activeTab].title}
-                    </motion.h3>
-                    <motion.p
-                      className="text-[#000000]/80 mb-8 leading-relaxed text-lg"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.3, duration: 0.5 }}
-                    >
-                      {services[activeTab].content}
-                    </motion.p>
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.4, duration: 0.5 }}
-                    >
-                      <h4 className="text-xl font-semibold text-[#000000] mb-4">Key Benefits</h4>
-                      <ul className="space-y-4">
-                        {services[activeTab].benefits.map((benefit, i) => (
-                          <motion.li
-                            key={i}
-                            className="flex items-start"
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.5 + i * 0.1, duration: 0.4 }}
-                          >
-                            <span className="text-[#00A676] mr-3 mt-1 text-xl">•</span>
-                            <span className="text-[#000000]/80">{benefit}</span>
-                          </motion.li>
-                        ))}
-                      </ul>
-                    </motion.div>
-                    <motion.a
-                      href="#contact"
-                      className="inline-flex items-center px-8 py-4 mt-8 bg-gradient-to-r from-[#00A676] to-[#008F5D] text-[#FFFFFF] rounded-lg font-medium shadow-md hover:shadow-xl transition-all relative overflow-hidden"
-                      whileHover={{
-                        scale: 1.06,
-                        boxShadow: '0 12px 30px rgba(0, 166, 118, 0.4)',
-                      }}
-                      whileTap={{ scale: 0.94 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <motion.span
-                        className="absolute inset-0 bg-[#008F5D] opacity-0"
-                        whileHover={{ opacity: 0.25 }}
-                        transition={{ duration: 0.3 }}
-                      />
-                      <span className="relative z-10">Start Now</span>
-                      <FaExternalLinkAlt className="ml-2 relative z-10" />
-                    </motion.a>
-                  </div>
-                  <div className="relative h-72 md:h-auto">
-                    <motion.div
-                      className={`absolute inset-0 rounded-xl bg-gradient-to-br ${services[activeTab].accent} opacity-10`}
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 0.15, scale: 1 }}
-                      transition={{ duration: 0.6 }}
-                    />
-                    <motion.div
-                      className="absolute inset-0 flex items-center justify-center"
-                      initial={{ opacity: 0, rotateY: 15, scale: 0.9 }}
-                      animate={{ opacity: 1, rotateY: 0, scale: 1 }}
-                      transition={{ duration: 0.7, delay: 0.2 }}
-                    >
-                      <div className="relative w-full h-full max-w-md">
-                        <motion.div
-                          className="absolute inset-0 bg-[#FFFFFF]/80 backdrop-blur-md rounded-lg shadow-lg border border-[#00A676]/20 flex items-center justify-center"
-                          animate={{
-                            rotateY: [0, 5, -5, 0],
-                            y: [0, -15, 0],
-                            scale: [1, 1.02, 1],
-                          }}
-                          transition={{
-                            duration: 10,
-                            repeat: Infinity,
-                            repeatType: 'reverse',
-                            ease: 'easeInOut',
-                          }}
-                        >
-                          <div className="text-6xl">{services[activeTab].icon}</div>
-                        </motion.div>
-                        {[...Array(3)].map((_, i) => (
-                          <motion.div
-                            key={i}
-                            className="absolute inset-0 bg-[#FFFFFF]/50 backdrop-blur-sm rounded-lg shadow-md border border-[#00A676]/10 opacity-20"
-                            style={{
-                              rotateY: (i + 1) * 4,
-                              scale: 1 - (i + 1) * 0.04,
-                              zIndex: -i - 1,
-                            }}
-                            animate={{
-                              y: [0, i % 2 ? 8 : -8, 0],
-                            }}
-                            transition={{
-                              duration: 5 + i,
-                              repeat: Infinity,
-                              repeatType: 'reverse',
-                              ease: 'easeInOut',
-                            }}
-                          />
-                        ))}
-                      </div>
-                    </motion.div>
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
+          {/* Sample service image */}
+          <div className="absolute inset-0 overflow-hidden">
+            <img
+              src={
+                key === 'webdev' ? 'https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80' :
+                key === 'marketing' ? 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80' :
+                key === 'video' ? 'https://images.unsplash.com/photo-1579389083078-4e7018379f7e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80' :
+                'https://images.unsplash.com/photo-1522542550221-31fd19575a2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80'
+              }
+              alt={service.title}
+              className="w-full h-full object-cover opacity-30 group-hover:opacity-40 transition-all duration-500"
+            />
           </div>
-        </section>
+
+          {/* Content */}
+          <div className="relative h-full flex flex-col justify-end p-8 text-white">
+            <motion.h3
+              className="text-3xl font-bold mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              {service.title}
+            </motion.h3>
+            <motion.p
+              className="mb-6 opacity-90"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              {service.content}
+            </motion.p>
+            <motion.div
+              className="flex flex-wrap gap-2 mb-6"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              {service.benefits.map((benefit, i) => (
+                <span
+                  key={i}
+                  className="px-3 py-1 bg-white/10 backdrop-blur-sm rounded-full text-sm"
+                >
+                  {benefit}
+                </span>
+              ))}
+            </motion.div>
+            <motion.button
+              className="self-start px-6 py-3 bg-white text-[#00A676] rounded-lg font-medium flex items-center gap-2 mt-4"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Learn more <FaArrowRight />
+            </motion.button>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+
+    {/* Expanded service details */}
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={activeTab}
+        className="mt-16 bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border border-white/20"
+        initial={{ opacity: 0, height: 0 }}
+        animate={{ opacity: 1, height: 'auto' }}
+        exit={{ opacity: 0, height: 0 }}
+        transition={{ duration: 0.5, ease: 'easeInOut' }}
+      >
+        <div className="grid lg:grid-cols-2 gap-12 p-12">
+          <div>
+            <motion.h3
+              className="text-4xl font-bold mb-8 bg-gradient-to-r from-[#00A676] to-[#008F5D] text-transparent bg-clip-text"
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              {services[activeTab].title} Solutions
+            </motion.h3>
+            
+            <motion.div
+              className="space-y-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              <p className="text-lg text-gray-700 leading-relaxed">
+                {services[activeTab].content}
+              </p>
+              
+              <div className="bg-gradient-to-r from-[#00A676]/10 to-transparent p-6 rounded-xl">
+                <h4 className="text-xl font-semibold mb-4">Our Approach</h4>
+                <ul className="space-y-3">
+                  {[
+                    'Data-driven decision making',
+                    'Cutting-edge technology',
+                    'User-centric design',
+                    'Measurable results'
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start">
+                      <FaCheckCircle className="text-[#00A676] mt-1 mr-3 flex-shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+          </div>
+
+          <div className="relative h-96 lg:h-auto">
+            {/* Interactive 3D service visualization */}
+            <motion.div
+              className="relative h-full w-full rounded-2xl overflow-hidden"
+              whileHover={{ scale: 0.98 }}
+              transition={{ duration: 0.3 }}
+            >
+              <img
+                src={
+                  activeTab === 'webdev' ? 'https://images.unsplash.com/photo-1626785774573-4b799315345d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80' :
+                  activeTab === 'marketing' ? 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1115&q=80' :
+                  activeTab === 'video' ? 'https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1168&q=80' :
+                  'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80'
+                }
+                alt={services[activeTab].title}
+                className="w-full h-full object-cover rounded-2xl"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#00A676]/70 via-transparent to-transparent" />
+              
+              {/* Floating stats */}
+              <motion.div
+                className="absolute bottom-8 left-8 bg-white/90 backdrop-blur-md p-4 rounded-xl shadow-lg"
+                animate={{
+                  y: [0, -10, 0],
+                }}
+                transition={{
+                  duration: 6,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                }}
+              >
+                <div className="text-3xl font-bold text-[#00A676]">95%</div>
+                <div className="text-sm">Client Satisfaction</div>
+              </motion.div>
+              
+              <motion.div
+                className="absolute top-8 right-8 bg-white/90 backdrop-blur-md p-4 rounded-xl shadow-lg"
+                animate={{
+                  y: [0, 10, 0],
+                }}
+                transition={{
+                  duration: 5,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                  delay: 1,
+                }}
+              >
+                <div className="text-3xl font-bold text-[#00A676]">200+</div>
+                <div className="text-sm">Projects Completed</div>
+              </motion.div>
+            </motion.div>
+          </div>
+        </div>
+      </motion.div>
+    </AnimatePresence>
+  </div>
+</section>
 
         {/* Case Studies Section */}
         <section className="py-28 px-4 bg-[#E6F7F2]">
